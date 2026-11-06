@@ -26,12 +26,18 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
 #card { position: absolute; top: 64px; left: max(16px, env(safe-area-inset-left, 0px)); max-width: min(320px, calc(100% - 32px)); background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--accent); padding: 10px 12px; font-size: 12px; line-height: 1.5; pointer-events: none; }
 #card b { font-family: "Barlow Condensed", "Arial Narrow", sans-serif; font-size: 20px; letter-spacing: .03em; text-transform: uppercase; display: block; line-height: 1.1; }
 #card[hidden] { display: none; }
+#dir { position: absolute; top: 56px; right: max(16px, env(safe-area-inset-right, 0px)); width: 226px; max-height: calc(100% - 150px); overflow: auto; background: var(--panel); border: 1px solid var(--line); padding: 8px 6px; }
+#dir[hidden] { display: none; }
+#dir h4 { font: 700 11px "IBM Plex Mono", monospace; letter-spacing: .08em; text-transform: uppercase; margin: 8px 6px 4px; color: var(--accent); }
+#dir button { display: block; width: 100%; text-align: left; padding: 5px 6px; font-size: 11px; }
+#dir button span { opacity: .6; }
 </style>
 
 <a href="../" style="position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:50;font:500 12px/1 Helvetica,Arial,sans-serif;letter-spacing:.08em;color:#283c35;background:rgba(245,243,237,.92);padding:9px 14px;text-decoration:none;border:1px solid #283c35">← INDICO DEVELOPMENTS</a>
 <div id="stage"></div>
-<div class="title"><b>NTT Mall</b><span>Concept render v1.3 · 100 × 100 m</span></div>
+<div class="title"><b>NTT Mall</b><span>Concept render v2.0 · 108 × 140 m · institute on 3 floors</span></div>
 <div class="hint">Drag to orbit · scroll or pinch to zoom · click any building</div>
+<div id="dir" hidden></div>
 <div id="card" hidden><b id="ct"></b><span id="cd"></span></div>
 <div class="bar">
   <div class="grp" id="views" role="group" aria-label="Views">
@@ -43,10 +49,13 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     <button data-v="yard" aria-pressed="false">Trucks</button>
     <button data-v="aerial" aria-pressed="false">Aerial</button>
   </div>
-  <div class="grp" id="inst" role="group" aria-label="Institute">
-    <button data-i="0" aria-pressed="true">Institute closed</button>
-    <button data-i="1" aria-pressed="false">Open interior</button>
+  <div class="grp" id="inst" role="group" aria-label="Institute floors">
+    <button data-f="4" aria-pressed="true">Closed</button>
+    <button data-f="3" aria-pressed="false">Floor 3</button>
+    <button data-f="2" aria-pressed="false">Floor 2</button>
+    <button data-f="1" aria-pressed="false">Floor 1</button>
   </div>
+  <div class="grp" role="group" aria-label="Directory"><button id="dirbtn" aria-pressed="false">Directory</button></div>
   <div class="grp" id="modes" role="group" aria-label="Light">
     <button data-m="day" aria-pressed="false">Day</button>
     <button data-m="dusk" aria-pressed="true">Dusk</button>
@@ -134,7 +143,7 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
   var hemi = new THREE.HemisphereLight(0xffffff, 0x777766, 1);
   var sun = new THREE.DirectionalLight(0xffffff, 1);
   sun.castShadow = true; sun.shadow.mapSize.set(8192, 8192);
-  var sc = sun.shadow.camera; sc.left = -80; sc.right = 80; sc.top = 80; sc.bottom = -80; sc.near = 1; sc.far = 500;
+  var sc = sun.shadow.camera; sc.left = -125; sc.right = 125; sc.top = 125; sc.bottom = -125; sc.near = 1; sc.far = 500;
   sun.shadow.bias = -0.0005;
   scene.add(hemi, sun);
 
@@ -211,7 +220,7 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
   var instRooms = new THREE.Group(); instRooms.visible = false; root.add(instRooms);
   function pick(x, y, w, d, h, e, t, desc, group) {
     var m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshBasicMaterial({ visible: false }));
-    m.position.set(x + w / 2 - 50, e + h / 2, y + d / 2 - 50); m.userData = { t: t, d: desc, group: group || '' };
+    m.position.set(x + w / 2 - 50, e + h / 2, y + d / 2 - 50); m.userData = { t: t, d: desc, group: group || '', floor: e >= 14 ? 3 : (e >= 10 ? 2 : 1) };
     root.add(m); pickables.push(m); return m;
   }
   function mural(w, h, sd) {
@@ -330,6 +339,7 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     im.castShadow = false; im.receiveShadow = true; root.add(im); fbs = [];
   }
   function buildInterior() {
+    root = mallG;
     var UE = 5.9, TOP = 10.1, GH = 5.2;
     function chair(x, y, back, c, dz) {
       dz = dz || 0; fb(x, y, 0.42, 0.42, UE + dz + 0.44, UE + dz + 0.5, c); fb(x + 0.19, y + 0.19, 0.05, 0.05, UE + dz, UE + dz + 0.44, 0x333333);
@@ -439,6 +449,53 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     seg('y', 76.4, 63.8, 72, [], mat.dtimber, 4.2); seg('x', 66.5, 76.4, 80, [[77.3, 78.3]], mat.dtimber, 4.2); seg('x', 72, 83.2, 89.9, [[84.0, 85.0]], mat.dtimber, 4.2); seg('x', 81.7, 85.2, 89.9, [], mat.dtimber, 4.2); seg('x', 79, 83.2, 89.9, [], mat.dtimber, 4.2); seg('x', 68, 83.2, 89.9, [], mat.dtimber, 4.2);
     // timber ceiling beams under the roof
     [[48, 84, 13.6, 13], [69.6, 84, 20.4, 13], [48, 63.6, 13.6, 10.4], [69.6, 63.6, 20.4, 10.4], [80, 74, 10, 10], [48, 74, 2, 10]].forEach(function (r) { for (var bx = r[0] + 0.8; bx < r[0] + r[2]; bx += 1.7) B(bx, r[1] + 0.2, 0.16, r[3] - 0.4, 0.35, mat.timber, TOP - 0.35, false); });
+    flushFB();
+    var TOP0 = TOP;
+    function wcB(x0, y0, w, d, n) { floorT(x0, y0, w, d, 0xd7e0e0); for (var i = 0; i < n; i++) { fb(x0 + 0.3, y0 + 0.4 + i * (d - 0.8) / n, 0.45, 0.55, UE, UE + 0.4, 0xf4f4f2); fb(x0 + 1.3, y0 + 0.2 + i * (d - 0.8) / n, 0.05, 1.0, UE, UE + 1.9, 0xe6ecef); } B(x0 + w - 0.6, y0 + 0.4, 0.4, d - 0.8, 0.9, mat.dtimber, UE, false); }
+    function sofa(x, y, w, c) { fb(x, y, w, 0.9, UE, UE + 0.45, c); fb(x, y + 0.75, w, 0.15, UE + 0.45, UE + 0.9, c); }
+    [[10.1, 0, 2], [14.3, 1, 3]].forEach(function (fl) {
+      UE = fl[0]; TOP = UE + 4.2; root = floorG[fl[1]]; var f3 = fl[2] === 3, F = 'Floor ' + fl[2] + ' · ';
+      function room(nm, x, y, w, d, desc) { pick(x, y, w, d, 2.6, UE, 'Institute · ' + F + nm, desc, 'room'); }
+      // west wing: front bar and rear bar
+      if (f3) {
+        floorT(48, 86, 13.6, 11, 0xb9a688);
+        for (var hr = 0; hr < 6; hr++) for (var hc = 0; hc < 9; hc++) chair(49.2 + hc * 1.3, 87.6 + hr * 1.5, 'N', 0x9a5a3a);
+        fb(49, 86.3, 11, 0.5, UE, UE + 0.5, 0x6a4a34); B(48.2, 86.1, 0.08, 10.6, 2.2, mat.screen, UE + 0.9, false);
+        for (var hl = 0; hl < 5; hl++) lampPanel(50 + hl * 2.4, 91, 1.6, 0.6);
+        room('Multipurpose hall', 48, 86, 13.6, 11, 'Flexible hall for talks, exams and events, 150 m², seating for about 80. Opens to the third-floor gallery.');
+      } else {
+        classroom(48, 86, 6.8, 11, 'W', 0xc9a77c); classroom(54.8, 86, 6.8, 11, 'E', 0xc9a77c);
+        room('Classroom 2A', 48, 86, 6.8, 11, 'About 40 students, door from the front gallery.'); room('Classroom 2B', 54.8, 86, 6.8, 11, 'About 40 students, door from the front gallery.');
+      }
+      classroom(48, 63.6, 6.8, 8.4, 'W', 0xc9a77c); room('Classroom ' + fl[2] + 'C', 48, 63.6, 6.8, 8.4, 'About 30 students, door from the rear gallery.');
+      wcB(54.8, 63.6, 6.8, 8.4, 4); room('Toilets (west)', 54.8, 63.6, 6.8, 8.4, 'Stacked over the ground-floor and first-floor toilets: women, men, accessible.');
+      // east wing: front bar, east link, rear bar
+      if (f3) {
+        floorT(69.6, 86, 10.4, 11, 0xb9a688); sofa(70.4, 87, 3.2, 0x3a5a6a); sofa(74.2, 87, 3.2, 0x7a5a3a); sofa(70.4, 93.6, 3.2, 0x7a5a3a); sofa(74.2, 93.6, 3.2, 0x3a5a6a);
+        fb(72.2, 90.4, 2.0, 1.2, UE, UE + 0.4, 0xc8a06a); lampPanel(72, 90, 1.6, 0.6); lampPanel(72, 94, 1.6, 0.6);
+        room('Study lounge', 69.6, 86, 10.4, 11, 'Quiet study and group-work lounge with soft seating, overlooking the courtyard.');
+      } else {
+        lab(69.6, 86, 10.4, 11); room('Computer lab 2', 69.6, 86, 10.4, 11, '30 workstations with backup power, door from the front gallery.');
+      }
+      classroom(83.2, 84, 6.8, 7.6, 'E', 0xc9a77c); classroom(83.2, 91.6, 6.8, 5.4, 'E', 0xc9a77c);
+      room('Classroom ' + fl[2] + 'D', 83.2, 84, 6.8, 7.6, 'About 24 students, door from the east foyer.'); room('Classroom ' + fl[2] + 'E', 83.2, 91.6, 6.8, 5.4, 'About 18 students, street window.');
+      classroom(83.2, 74, 6.8, 5, 'E', 0xc9a77c); room('Classroom ' + fl[2] + 'F', 83.2, 74, 6.8, 5, 'About 18 students, door from the east foyer.');
+      wcB(83.2, 79, 6.8, 5, 3); room('Toilets (east)', 83.2, 79, 6.8, 5, 'Stacked toilets for the east classrooms, accessible toilet included.');
+      if (f3) {
+        floorT(83.2, 63.6, 6.8, 4.4, 0xe6dcc8); fb(84.3, 64.4, 2.0, 0.9, UE, UE + 0.75, 0x7a5236); fb(88.6, 64.4, 0.4, 3.0, UE, UE + 1.9, 0x4a3222); lampPanel(86.5, 66, 1.4, 0.6);
+        floorT(83.2, 68, 6.8, 4, 0xb9a688); fb(83.7, 69.0, 1.8, 0.8, UE, UE + 0.75, 0x7a5236); fb(86.2, 69.0, 1.8, 0.8, UE, UE + 0.75, 0x7a5236); fb(84.4, 70.9, 3.4, 0.9, UE, UE + 0.45, 0x3a4a5a);
+        room('Direction and secretariat', 83.2, 63.6, 6.8, 4.4, 'Director and administration with their own WC and a door onto the foyer.'); room('Staff room', 83.2, 68, 6.8, 4, 'Teachers room with desks and lockers.');
+        classroom(69.6, 63.6, 6.8, 8.4, 'W', 0xc9a77c); room('Classroom 3G', 69.6, 63.6, 6.8, 8.4, 'About 30 students, door from the rear gallery.');
+        floorT(76.4, 63.6, 3.6, 8.4, 0xd8c9b0); fb(77, 65, 2.4, 1.1, UE, UE + 0.75, 0x7a5236); for (var mc = 0; mc < 6; mc++) chair(76.9 + (mc % 3) * 0.8, 64.1 + Math.floor(mc / 3) * 2.4, 'N', 0x3a4a5a);
+        room('Meeting room', 76.4, 63.6, 3.6, 8.4, 'Meeting room for staff and visitors, next to the direction.');
+      } else {
+        classroom(83.2, 63.6, 6.8, 8.4, 'E', 0xc9a77c); room('Classroom 2G', 83.2, 63.6, 6.8, 8.4, 'About 30 students, door from the east foyer.');
+        classroom(69.6, 63.6, 6.8, 8.4, 'W', 0xc9a77c); room('Classroom 2H', 69.6, 63.6, 6.8, 8.4, 'About 30 students, door from the rear gallery.');
+        floorT(76.4, 63.6, 3.6, 8.4, 0xd8c9b0); fb(77, 65, 2.4, 1.1, UE, UE + 0.75, 0x7a5236); room('Tutorial room', 76.4, 63.6, 3.6, 8.4, 'Small tutorial and consultation room.');
+      }
+      flushFB();
+    });
+    UE = 5.9; TOP = TOP0; root = mallG;
     // shop interiors: shelving, counters, ceiling lights, so lit shops read through the glass
     var xs2 = [48, 54.8, 69.6, 76.4, 83.2], pal = [0xd9603b, 0x3b7bd9, 0xe0b53a, 0x4aa36b, 0xcfcfcf, 0x9a5bd0];
     xs2.forEach(function (x, s) {
@@ -457,6 +514,7 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     [[50.5, 97.6], [86.6, 97.6]].forEach(function (c) { fb(c[0], c[1], 2.0, 0.5, 0.42, 0.5, 0x9a6540); fb(c[0] + 0.1, c[1] + 0.05, 0.1, 0.4, 0, 0.42, 0x2f3438); fb(c[0] + 1.8, c[1] + 0.05, 0.1, 0.4, 0, 0.42, 0x2f3438); });
     [[59.6, 97.5], [70.4, 97.5]].forEach(function (c) { B(c[0], c[1], 1.1, 1.1, 0.7, mat.conc); tree(c[0] + 0.55, c[1] + 0.55, 0.4); });
     xs2.forEach(function (x, s) { var ce = 4.3 + 0.4 * (s % 2); B(x + 1.2, 95.2, 0.3, 0.3, 0.12, mat.lamp, ce - 0.15, false); B(x + 4.6, 95.2, 0.3, 0.3, 0.12, mat.lamp, ce - 0.15, false); B(x + 1.2, 63.6, 0.3, 0.3, 0.12, mat.lamp, 4.15, false); B(x + 4.6, 63.6, 0.3, 0.3, 0.12, mat.lamp, 4.15, false); });
+    flushFB(); root = oldG;
     B(-0.3, -0.3, 0.3, 100.3, 2.2, mat.stone); B(100, -0.3, 0.3, 45, 2.2, mat.stone); B(-0.3, -0.3, 100.6, 0.3, 2.2, mat.stone);
     for (var fx = 0; fx < 40; fx += 1.5) { if ((fx > 3 && fx < 13) || (fx > 19 && fx < 29)) continue; B(fx, 99.8, 0.08, 0.08, 1.5, mat.steelD, 0, false); }
     // customers / trucks / fuel kept apart: steel fences, gates, guard house, signs
@@ -465,6 +523,7 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     B(95, 78, 2, 6, 3, mat.white); B(94.6, 77.6, 2.8, 6.8, 0.25, mat.steelD, 3.0); B(92, 78.8, 3, 0.1, 0.1, mat.yellow, 1.0, false); B(97, 78.8, 3, 0.1, 0.1, mat.yellow, 1.0, false);
     B(94.9, 85, 2.2, 8, 0.15, mat.green, 0.1, false);
     [[8, 'Posto · Entrada'], [24, 'Posto · Saída'], [44.5, 'Clientes'], [96, 'Camiões']].forEach(function (g, gi) { B(g[0] - 0.1, 98.4, 0.2, 0.2, 3.2, mat.steelD); sign(g[1], g[0], 98.6, 3.0, 4.2, 0.9, gi === 3 ? '#c8572c' : (gi < 2 ? '#e0ac2c' : '#2f6fa3'), gi === 3 ? '#ffffff' : (gi < 2 ? '#23201c' : '#ffffff'), false); });
+    flushFB(); root = mallG;
     // public toilets for the shops and the institute: next to the central gate, entrance from the courtyard, stacked under the first-floor toilets
     function wallP(x0, py0, x1, py1, gaps, h) { var vert = Math.abs(x1 - x0) < 0.01, a0 = vert ? py0 : x0, a1 = vert ? py1 : x1, cur = a0; gaps.concat([[a1, a1]]).forEach(function (g) { if (g[0] > cur) { if (vert) B(x0 - 0.06, cur, 0.12, g[0] - cur, h, mat.stone); else B(cur, py0 - 0.06, g[0] - cur, 0.12, h, mat.stone); } if (g[1] > g[0]) { if (vert) B(x0 - 0.06, g[0], 0.12, g[1] - g[0], h - 2.2, mat.stone, 2.2); else B(g[0], py0 - 0.06, g[1] - g[0], 0.12, h - 2.2, mat.stone, 2.2); } cur = g[1]; }); }
     wallP(54.95, 73.9, 61.45, 73.9, [[55.3, 56.5]], GH); wallP(54.95, 64.1, 61.45, 64.1, [], GH);
@@ -478,19 +537,23 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     [1, 2, 3, 4, 5].forEach(function (k) { B(83.36, 74.6 + k * 1.48, 0.08, 0.08, 4.2, mat.steelD, 0.15, false); });
     B(83.0, 74.4, 0.6, 9.2, 0.18, mat.steelD, 4.3, false); B(82.2, 74.5, 1.6, 9.1, 0.2, mat.timber, 4.3); sign('Salon', 82.1, 79, 4.4, 5.0, 0.7, '#6d4529', '#f6ead8', true, -Math.PI / 2);
     fb(89.35, 75, 0.4, 8, 0, 2.3, 0x6a5a48); fb(85.2, 76.5, 2.4, 0.6, 0, 1.05, 0x3a2a20); fb(85.2, 80.6, 2.4, 0.6, 0, 1.05, 0x3a2a20); B(85.6, 75.2, 0.2, 8, 0.08, mat.panel, 4.8, false);
+    flushFB(); root = stG;
     // fuel station extras: vents, fill point, public WC sign, air and water bay; warehouse services, weighbridge, pedestrian doors
     [14, 24, 34].forEach(function (vx) { B(vx - 0.1, 65.9, 0.2, 0.2, 4.6, mat.steelD); });
     sign('Descarga', 7, 65.8, 1.2, 3.0, 0.6, '#c0432e', '#ffffff', true);
     sign('WC', 14.5, 62.3, 3.0, 1.2, 0.6, '#2f6fa3', '#ffffff', true);
     B(36.2, 76, 3.4, 12, 0.1, mat.conc, 0.1, false); [78, 82, 86].forEach(function (ay) { B(37.8, ay, 0.2, 0.2, 2.2, mat.steelD); B(37.7, ay, 0.4, 0.4, 0.5, mat.blue, 1.0); }); sign('Ar · Água', 38.0, 75.8, 2.6, 2.6, 0.5, '#2f6fa3', '#ffffff', true);
+    flushFB(); root = oldG;
     for (var wp = 0; wp < 10; wp++) { B(2 + wp * 9 + 7.0, 13.85, 0.9, 0.25, 2.2, mat.dark, 0, false); B(2 + wp * 9 + 0.32, 0.3, 3.0, 4.3, 0.15, mat.pave, 0, false); }
     B(93, 2, 3, 3, 2.8, mat.conc); B(96, 2, 3, 3, 2.6, mat.conc); sign('PT', 94.5, 5.1, 2.0, 1.2, 0.6, '#c0432e', '#ffffff', true); sign('Gerador', 97.5, 5.1, 1.8, 2.2, 0.6, '#4c555d', '#ffffff', true);
     var wt = new THREE.Mesh(new THREE.CylinderGeometry(2.4, 2.4, 4, 24), M(0xb9c0c6, { metalness: 0.3, roughness: 0.5 })); wt.position.copy(P(96, 8.5, 2)); wt.castShadow = true; root.add(wt); B(93.2, 6.2, 5.6, 0.2, 0.4, mat.steelD, 4.0);
     B(96.5, 60, 3, 16, 0.12, mat.conc, 0.13, false); sign('Báscula', 98, 59.8, 0.8, 3.0, 0.6, '#4c555d', '#ffffff', true);
+    flushFB(); root = mallG;
     // Escada 2, from the west gallery down into the courtyard
     (function () { var RS2 = 5.9 / 36; function fb2(x, w, py0, dir, n, top0) { for (var k = 0; k < n; k++) { var pa = py0 + dir * k * 0.25, lo = dir > 0 ? pa : pa - 0.25; B(x, lo, w, 0.23, top0 - k * RS2, mat.conc, 0, false); B(x - 0.04, lo, w + 0.08, 0.04, 0.05, mat.timber, top0 - k * RS2, false); } }
       fb2(50.3, 1.2, 77.3, 1, 17, 5.9 - RS2); B(50.3, 81.55, 2.6, 1.2, 2.95, mat.conc); fb2(51.7, 1.2, 81.55, -1, 17, 2.95 - RS2); B(50.0, 76.0, 1.6, 1.3, 0.5, mat.stone, 5.2);
       [50.3, 51.5].forEach(function (rx) { bar(P(rx, 77.3, 6.9), P(rx, 81.55, 3.95), 0.03, mat.steelD); }); [51.7, 52.9].forEach(function (rx) { bar(P(rx, 81.55, 3.95), P(rx, 77.3, 1.0), 0.03, mat.steelD); }); })();
+    flushFB(); root = oldG;
     // waste yard, drivers' facilities, accessible bays (parking is uncovered)
     B(46.2, 53.5, 4.3, 0.1, 2.2, mat.steelD); B(46.2, 57.4, 4.3, 0.1, 2.2, mat.steelD); B(46.2, 53.5, 0.1, 4.0, 2.2, mat.steelD); B(50.4, 53.5, 0.1, 4.0, 2.2, mat.steelD); B(47, 54.5, 1.6, 1.0, 1.1, mat.green, 0.1);
     B(93, 16, 6, 6, 3.2, mat.white); B(92.8, 15.8, 6.4, 6.4, 0.2, mat.steelD, 3.2); sign('Motoristas', 96, 22.1, 2.2, 3.6, 0.6, '#4c555d', '#ffffff', true);
@@ -513,19 +576,23 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     if (!downAt) return; var mv = Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y); downAt = null; if (mv > 5) return;
     var r = stage.getBoundingClientRect(); ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     ray.setFromCamera(ndc, camera);
-    var list = pickables.filter(function (m) { return m.userData.group === 'room' ? open : (m.userData.group === 'shell' ? !open : true); });
+    var list = pickables.filter(function (m) { return m.userData.group === 'room' ? (open && m.userData.floor === curFloor) : (m.userData.group === 'shell' ? !open : true); });
     var h = ray.intersectObjects(list, false); showPick(h.length ? h[0].object : null);
   });
-  function setInst(v) {
-    open = v; instRooms.visible = v; roofParts.forEach(function (p) { p.visible = !v; });
-    document.querySelectorAll('#inst button').forEach(function (b) { b.setAttribute('aria-pressed', (b.dataset.i === '1') === v ? 'true' : 'false'); });
-    showPick(null); if (v) go('inst'); else if (cur.r < 120) go('mall');
+  function setFloor(n) {
+    curFloor = n; open = n < 4; instRooms.visible = open; roofParts.forEach(function (p) { p.visible = n === 4; });
+    if (floorG) { floorG[0].visible = n >= 2; floorG[1].visible = n >= 3; }
+    document.querySelectorAll('#inst button').forEach(function (b) { b.setAttribute('aria-pressed', (+b.dataset.f === n) ? 'true' : 'false'); });
+    showPick(null); if (n < 4) go('inst'); else if (cur.r < 120) go('mall');
   }
+  function setInst(v) { setFloor(v ? 1 : 4); }
 
   /* ---------- build ---------- */
+  var R0, mallG, stG, oldG, floorG, curFloor = 4;
   function build() {
     var gr = new THREE.Mesh(new THREE.PlaneGeometry(1200, 1200), mat.grass); gr.rotation.x = -Math.PI / 2; gr.position.y = -0.1; gr.receiveShadow = true; root.add(gr);
-    B(-6, -8, 112, 108, 0.1, mat.pave, 0, false);                 // plot
+    R0 = root; mallG = new THREE.Group(); stG = new THREE.Group(); oldG = new THREE.Group(); oldG.visible = false; R0.add(mallG); R0.add(stG); R0.add(oldG); mallG.add(instRooms); floorG = [new THREE.Group(), new THREE.Group()]; mallG.add(floorG[0]); mallG.add(floorG[1]);
+    root = oldG; B(-6, -8, 112, 108, 0.1, mat.pave, 0, false); root = R0;                 // old plot
     // local street in front of the plot (narrow, light surface), then a wide planted buffer, then the N4 dual carriageway
     B(-60, 100, 220, 7, 0.12, mat.paveD, 0, false);
     B(-60, 100, 220, 0.25, 0.3, mat.conc, 0, false);              // kerb / fence line
@@ -544,7 +611,8 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     root = rootSave;
     for (var bh = -58; bh < 160; bh += 2.2) if (rnd() < 0.7) B(bh, 108 + rnd() * 5, 1.4, 1.2, 0.5 + rnd() * 0.4, mat.green, 0.05, false);
 
-    // plot surfaces
+    root = oldG;
+    // plot surfaces (old layout, hidden)
     B(2, 14, 98, 30, 0.13, mat.asph, 0, false);                   // truck apron
     B(92, 44, 8, 58, 0.13, mat.asph, 0, false);                   // truck lane + entrance
     B(90, 46, 2, 56, 0.15, mat.green, 0, false);                  // planted separator
@@ -583,9 +651,92 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     put(semi(0xc9ced2, true), 36, 78 - 8, 0).visible = false;
     for (var lt = 0; lt < 3; lt++) { var rig = new THREE.Mesh(new THREE.BoxGeometry(2.4, 2.9, 7), M(0x4f7a40 + lt * 0x1a1000)); rig.position.copy(P(60 + lt * 11, 38, 1.6)); rig.castShadow = true; root.add(rig); }
 
+
+    root = R0;
+    /* ================= NEW SITE v2: fuel station 50 x 60 | mini mall 50 x 50 with the car park in front | independent warehouse compound with its own side entrance ================= */
+    B(-2, -40, 112, 142, 0.1, mat.pave, 0, false);                                  // the larger land
+    B(8, 40, 50, 60, 0.13, mat.asph, 0, false);                                      // fuel station plot 50 (front) x 60 (side)
+    B(58, 40, 50, 60, 0.13, mat.paveD, 0, false);                                    // mini mall plot, building moved back
+    B(58, 77, 50, 23, 0.14, mat.asph, 0, false);                                     // customer car park at the front, 23 m deep
+    B(58, 75.8, 50, 1.4, 0.15, mat.stone, 0, false);                                 // pavement along the mall
+    for (var cb = 0; cb <= 19; cb++) { B(60 + cb * 2.4, 79.2, 0.1, 4.8, 0.02, mat.line, 0.15, false); B(60 + cb * 2.4, 90.4, 0.1, 4.8, 0.02, mat.line, 0.15, false); }
+    B(58, 84.2, 50, 0.12, 0.02, mat.line, 0.15, false); B(58, 90.2, 50, 0.12, 0.02, mat.line, 0.15, false);                  // aisle edges: 6 m two-way aisle between the two bay rows
+    for (var ar = 62; ar < 106; ar += 9) { B(ar, 86.9, 3.2, 0.14, 0.02, mat.line, 0.16, false); B(ar + 2.4, 86.4, 0.9, 0.12, 0.02, mat.line, 0.16, false); B(ar + 2.4, 87.5, 0.9, 0.12, 0.02, mat.line, 0.16, false); }   // direction arrows
+    for (var zb = 0; zb < 7; zb++) B(66.4 + zb * 0.55, 84.2, 0.3, 6.0, 0.02, mat.line, 0.16, false);                       // zebra crossing to the institute tower
+    B(75.2, 79.2, 4.8, 4.8, 0.02, mat.blue, 0.16, false); B(80.0, 79.2, 4.8, 4.8, 0.02, mat.blue, 0.16, false);            // accessible bays next to the tower
+    [[58, 62], [68, 98], [104, 108]].forEach(function (g) { B(g[0], 95.2, g[1] - g[0], 4.6, 0.14, mat.green, 0, false); }); // planted strip along the street with entry (left) and exit (right) driveways
+    for (var pt = 64; pt < 106; pt += 7) tree(pt, 97.2, 0.55);
+    B(0, 6, 8, 94, 0.13, mat.asph, 0, false);                                        // warehouse side lane (west edge)
+    for (var ll = 8; ll < 98; ll += 6) B(3.9, ll, 0.2, 3, 0.02, mat.line, 0.14, false);
+    B(8, 6, 100, 29.6, 0.13, mat.asph, 0, false); B(8, 6, 100, 5, 0.14, mat.conc, 0, false); // truck yard 30 m + concrete dock strip
+    for (var yl = 10; yl < 106; yl += 8) B(yl, 24, 4, 0.15, 0.02, mat.line, 0.15, false);
+    B(8, 35.8, 50, 4.2, 0.1, mat.green, 0, false); B(58, 35.8, 50, 5.7, 0.14, mat.asph, 0, false);   // planted strip behind the station; service lane behind the mall
+    B(58, 38, 50, 12, 0.1, mat.green, 0, false);
+    // fences and walls: every plot is closed, the warehouse compound is independent
+    B(-0.2, 6, 0.2, 94.2, 2.2, mat.steelD);                                          // west boundary
+    B(107.8, -34, 0.2, 134.2, 2.2, mat.steelD);                                      // east boundary
+    B(-0.2, -34.2, 108.2, 0.2, 2.2, mat.steelD);                                     // north boundary
+    B(7.8, 38, 0.2, 38, 2.2, mat.steelD); B(7.8, 6, 0.2, 8, 2.2, mat.steelD); B(7.8, 32, 0.2, 6, 2.2, mat.steelD);   // lane fence with the yard gate opening between py 14 and 32
+    B(8, 35.6, 100, 0.2, 2.2, mat.steelD);                                           // fence between the yard and the mall and station
+    B(8, 40, 0.3, 60, 1.2, mat.stone); B(57.8, 40, 0.3, 60, 1.2, mat.stone); B(8, 40, 50, 0.3, 1.2, mat.stone);       // fuel station boundary wall
+    [[8, 15], [23, 31], [39, 58]].forEach(function (h) { B(h[0], 99, h[1] - h[0], 0.8, 0.8, mat.green, 0.1, false); });
+    sign('Posto · Entrada', 19, 98.2, 2.8, 5.4, 0.9, '#e0ac2c', '#23201c', true); sign('Posto · Saída', 35, 98.2, 2.8, 5.4, 0.9, '#e0ac2c', '#23201c', true);
+    B(18.9, 98.1, 0.2, 0.2, 2.8, mat.steelD); B(34.9, 98.1, 0.2, 0.2, 2.8, mat.steelD);
+    // fuel station: extra space at the back (50 x 60 m plot): EV charging bays under their own canopy, parking for vehicles waiting for the tyre shop
+    B(20, 42, 20, 6, 0.25, mat.steelD, 3.4); [[20.2, 42.2], [39.4, 42.2], [20.2, 47.4], [39.4, 47.4]].forEach(function (c) { B(c[0], c[1], 0.25, 0.25, 3.4, mat.steelD); });
+    for (var ev = 0; ev < 4; ev++) { B(22.5 + ev * 4.2, 44.1, 0.35, 0.35, 1.5, mat.white); B(22.5 + ev * 4.2, 44.0, 0.35, 0.1, 0.35, mat.blue, 1.1, false); B(21.5 + ev * 4.2, 45, 0.1, 3.6, 0.02, mat.line, 0.14, false); }
+    sign('EV', 30, 41.9, 3.9, 2.2, 0.7, '#2f6fa3', '#ffffff', true);
+    park(24, 46.5, Math.PI); park(32.6, 46.5, Math.PI);
+    [[12, 44], [52, 44], [12, 94], [54, 94], [52, 60], [12, 60]].forEach(function (t) { tree(t[0], t[1], 0.7); });
+    // mini mall plot: front car park fills, lamps, planters, street pylon
+    for (var pr = 0; pr < 2; pr++) for (var pc = 0; pc < 19; pc++) { var px = 60.6 + pc * 2.4; if (pr === 0 && px > 65.5 && px < 85) continue; if (rnd() < 0.7) park(px, pr ? 92.8 : 81.8, pr ? 0 : Math.PI); }
+    [62, 74, 86, 98, 106].forEach(function (lx) { lampPost(lx, 95.4, 8); }); [64, 88, 106].forEach(function (lx) { lampPost(lx, 84.0, 7); });
+    [[58.2, 79.2], [106.4, 79.2], [58.2, 90.4], [106.4, 90.4]].forEach(function (c) { B(c[0], c[1], 1.6, 1.6, 0.7, mat.conc); tree(c[0] + 0.8, c[1] + 0.8, 0.5); });
+    B(82.8, 98.2, 0.5, 0.5, 5.6, mat.steelD); sign('NTT Mall', 83.05, 98.5, 4.4, 5.6, 1.3, '#3f2a1a', '#f6ead8', true);
+    // back of house: 6 m service lane, two loading bays with roller doors, bin stores, delivery van, fire-engine lanes on both sides
+    B(58, 36, 4, 41, 0.14, mat.asph, 0, false); B(104, 36, 4, 41, 0.14, mat.asph, 0, false);
+    for (var sl = 60; sl < 106; sl += 6) B(sl, 38.6, 3, 0.15, 0.02, mat.line, 0.15, false);
+    [66, 98].forEach(function (lx) { B(lx, 41.2, 3.6, 0.3, 3.2, mat.dark, 0, false); B(lx - 0.3, 38.2, 4.2, 3.0, 0.2, mat.steel, 3.6); B(lx - 0.2, 38.3, 0.2, 0.2, 3.6, mat.steelD); B(lx + 3.8, 38.3, 0.2, 0.2, 3.6, mat.steelD); B(lx, 41.0, 3.6, 0.5, 1.1, mat.conc, 0, false); });
+    B(76, 38.2, 3.2, 2.6, 1.7, mat.steel); B(79.6, 38.2, 3.2, 2.6, 1.7, M(0x4f7a40)); B(83.2, 38.2, 3.2, 2.6, 1.7, mat.steel); sign('Serviço · Cargas', 82, 41.3, 3.4, 5.6, 0.8, '#4c555d', '#ffffff', true, Math.PI);
+    B(100.5, 37.0, 2.2, 5.0, 2.0, M(0xe8e6e0)); B(100.5, 37.0, 2.2, 1.3, 1.4, mat.glass, 0.6, false);
+    // outdoor tables of the café and the restaurant, facing the car park
+    function terrace(x, py, n) { for (var tt = 0; tt < n; tt++) { var tx = x + tt * 3.0; var tb = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 0.06, 12), mat.white); tb.position.copy(P(tx, py, 0.75)); tb.castShadow = true; root.add(tb); B(tx - 0.03, py - 0.03, 0.06, 0.06, 0.75, mat.steelD, 0, false); var um = new THREE.Mesh(new THREE.CylinderGeometry(1.4, 1.4, 0.05, 16), M(0xd9a441)); um.position.copy(P(tx, py, 2.3)); um.castShadow = true; root.add(um); B(tx - 0.03, py - 0.03, 0.06, 0.06, 2.3, mat.steelD, 0, false); B(tx - 0.9, py - 0.2, 0.4, 0.4, 0.45, M(0x2f5b6b), 0, false); B(tx + 0.5, py - 0.2, 0.4, 0.4, 0.45, M(0x2f5b6b), 0, false); } }
+    terrace(63.2, 77.0, 2); terrace(98.3, 77.0, 2);
+    pick(58, 77, 50, 23, 1, 0, 'Customer car park', 'About 38 bays in two rows of 19 around a 6 m two-way aisle, 2 accessible bays and a zebra crossing to the institute tower. Entry on the left, exit on the right, planted strip along the street.');
+    pick(8, 40, 50, 60, 1, 0, 'Fuel station plot', '50 m on the street and 60 m deep: pumps, convenience store, tyre workshop, car wash, EV bays and room for queuing.');
+    // warehouse compound: five units 20 x 40 m, own lane on the left, not connected to the mall or the station
+    var doorCols2 = [0xc8572c, 0xe0a030, 0x1f6f78, 0x4a4f55, 0xa8683a];
+    for (var w2 = 0; w2 < 5; w2++) {
+      var wx = 8 + w2 * 20, hh2 = 9.5 + (w2 % 2) * 1.5, dc2 = M(doorCols2[w2], { roughness: 0.6 });
+      B(wx + 0.1, -34, 19.8, 40, hh2, mat.wh);
+      B(wx + 4, -30, 12, 32, 1.2, mat.wh, hh2); B(wx + 3.9, -30, 0.1, 32, 0.7, mat.glow, hh2 + 0.3, false); B(wx + 15.9, -30, 0.1, 32, 0.7, mat.glow, hh2 + 0.3, false);
+      B(wx + 0.1, 5.8, 19.8, 0.3, 0.35, mat.steelD, hh2, false);
+      [wx + 3.2, wx + 11.6].forEach(function (dx) { B(dx, 5.85, 5, 0.25, 4.8, dc2, 0, false); B(dx - 0.2, 6, 5.4, 2.6, 0.2, mat.steel, 5.1); B(dx, 6, 0.3, 0.7, 1.4, mat.yellow, 0, false); B(dx + 4.7, 6, 0.3, 0.7, 1.4, mat.yellow, 0, false); });
+      B(wx + 9.4, 5.85, 1.0, 0.25, 2.2, mat.dark, 0, false); B(wx + 17.2, 5.85, 1.0, 0.25, 2.2, mat.dark, 0, false);
+      [wx - 0.05, wx + 19.75].forEach(function (fx) { B(fx, 5.6, 0.3, 0.3, hh2 + 0.1, mat.corten); B(fx, 5.6, 0.3, 0.3, 0.3, mat.corten, hh2 - 0.15); });
+      B(wx - 0.05, 5.6, 20.1, 0.3, 0.3, mat.corten, hh2 - 0.15);
+      bar(P(wx + 0.4, 6.4, 5.4), P(wx + 9.6, 6.4, hh2 - 0.3), 0.06, mat.steelD); bar(P(wx + 9.6, 6.4, 5.4), P(wx + 0.4, 6.4, hh2 - 0.3), 0.06, mat.steelD);
+      bar(P(wx + 10.4, 6.4, 5.4), P(wx + 19.6, 6.4, hh2 - 0.3), 0.06, mat.steelD); bar(P(wx + 19.6, 6.4, 5.4), P(wx + 10.4, 6.4, hh2 - 0.3), 0.06, mat.steelD);
+      sign(String(w2 + 1), wx + 10, 5.8, 5.9, 1.4, 0.8, '#2b2220', '#ffffff', false);
+      pick(wx, -34, 20, 40, hh2 + 1.2, 0, 'Warehouse ' + (w2 + 1), '20 × 40 m, 800 m². Two dock doors onto the 30 m truck yard, office with WC, steel portal frames and a clerestory roof-light.');
+    }
+    put(semi(0x2d4a6b), 14.9, 20.5, 0); put(semi(0x7a2b2b), 54.9, 20.5, 0); put(semi(0xd4891c), 74.5, 20.5, 0);
+    for (var lt = 0; lt < 2; lt++) { var rig = new THREE.Mesh(new THREE.BoxGeometry(2.4, 2.9, 7), M(0x4f7a40 + lt * 0x1a1000)); rig.position.copy(P(32 + lt * 56, 30, 1.6)); rig.castShadow = true; root.add(rig); }
+    B(3.2, 30, 1.8, 3, 3, mat.white); B(2.9, 29.8, 2.4, 3.4, 0.2, mat.steelD, 3.0); sign('Guarita', 4.1, 33.1, 2.0, 2.4, 0.6, '#4c555d', '#ffffff', true);
+    B(0.3, 27.9, 3.0, 0.12, 0.12, mat.yellow, 1.0, false); B(5.0, 27.9, 3.0, 0.12, 0.12, mat.yellow, 1.0, false);
+    B(1.0, 42, 2.6, 10, 0.12, mat.conc, 0.13, false); sign('Báscula', 2.3, 52.2, 0.8, 3.0, 0.6, '#4c555d', '#ffffff', true);
+    B(3.8, 97.9, 0.3, 0.3, 3.4, mat.steelD); sign('Camiões', 4, 98.2, 3.4, 5.4, 0.9, '#4c555d', '#ffffff', true);
+    [14, 40, 66, 92].forEach(function (lx) { lampPost(lx, 24, 10); }); [20, 44, 68, 92].forEach(function (ly) { lampPost(6, ly, 8); });
+    for (var tv = 40; tv < 100; tv += 10) tree(-1.8, tv, 0.9);
+    for (var tw = 12; tw < 106; tw += 14) tree(tw, -37, 1.0);
+    pick(58, 35.8, 50, 5.7, 1, 0, 'Service lane', '6 m lane behind the mall for deliveries, bins and fire-engine access, with two loading bays. Trucks and vans never cross the customer car park.');
+    pick(8, 6, 100, 29.6, 1, 0, 'Truck yard', '30 m deep yard with its own gate on the left lane. Trucks never enter the mall or the station; the compound has its own fence, guard house and weighbridge.');
+    pick(0, 6, 8, 94, 1, 0, 'Warehouse lane', 'Independent access from the street along the left (west) edge of the land, separated by a fence from the fuel station.');
+    root = oldG;
+    root = mallG;
     /* ---- MALL ---- */
     var xs = [48, 54.8, 69.6, 76.4, 83.2], sw = 6.8, GH = 5.2, UE = 5.9, UH = 4.2, TOP = UE + UH;
-    var names = ['Pharmacy', 'Mini-market', 'Café', 'Phones', 'Hardware', 'Clothing', 'Salon', 'Print', 'Bank / ATM', 'Restaurant'];
+    var names = ['Hardware', 'Print', 'Clothing', 'Phones', 'Bank / ATM', 'Restaurant', 'Salon', 'Mini-market', 'Pharmacy', 'Café'];
     [48, 54.8, 61.6, 69.6, 76.4, 83.2, 90].forEach(function (wx) { B(wx - 0.15, 84, 0.3, 12, GH, mat.stone); B(wx - 0.15, 64, 0.3, 10, GH, mat.stone); });
     B(89.85, 74, 0.3, 10, GH, mat.stone);
     B(90.15, 64, 0.1, 33, GH, mat.dtimber, 0, false);
@@ -606,7 +757,7 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
       bar(P(x + 0.5, 61.9, 4.45), P(x + 0.5, 64.2, 5.8), 0.04, mat.steelD); bar(P(x + sw - 0.5, 61.9, 4.45), P(x + sw - 0.5, 64.2, 5.8), 0.04, mat.steelD);
       sign(names[s], x + sw / 2, 96.66, ce + 0.1, 5.4, 0.7, '#6d4529', '#f6ead8', true);
       sign(s === 1 ? 'Public WC' : names[s + 5], x + sw / 2, 61.78, 4.4, 5.4, 0.7, s === 1 ? '#2f6fa3' : '#6d4529', s === 1 ? '#ffffff' : '#f6ead8', true, Math.PI);
-      pick(x, 84, sw, 12, GH, 0, names[s], 'About 70 m². Opens to the N4 pavement and to the courtyard.');
+      pick(x, 84, sw, 12, GH, 0, names[s], 'About 82 m², destination shop. Entrance from the courtyard, deliveries through the 6 m service lane at the back.');
       pick(x, 64, sw, 10, GH, 0, s === 1 ? 'Public toilets' : names[s + 5], s === 1 ? 'Women, men and accessible toilets for the shops and the institute, entrance from the courtyard beside the central gate, stacked under the first-floor toilets.' : 'About 65 m². Opens to the courtyard and to the rear arcade, so shoppers from the parking walk straight in.');
     }
     // floor slabs
@@ -657,6 +808,23 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     backWall(48, 61.4, 96.15, [[50, 60]]); backWall(69.9, 89.9, 96.15, [[71.4, 79], [83.6, 88.4]]);
     backWall(48, 61.4, 63.75, [[49.5, 53.5]]); backWall(69.9, 89.9, 63.75, [[70.4, 75.6], [76.8, 79.2], [80, 83.2, 'door'], [84, 89]]);
     B(48.05, 63.8, 0.15, 10.2, UH, bwm, UE, false); B(48.05, 84, 0.15, 13, UH, bwm, UE, false); [[63.8, 65], [67, 69.5], [72.5, 75], [78, 80.5], [83.5, 86], [89, 97.2]].forEach(function (g) { B(89.5, g[0], 0.15, g[1] - g[0], UH, bwm, UE, false); }); [[65, 67], [69.5, 72.5], [75, 78], [80.5, 83.5], [86, 89]].forEach(function (g) { B(89.5, g[0], 0.15, g[1] - g[0], 1.0, bwm, UE, false); B(89.5, g[0], 0.15, g[1] - g[0], UH - 3.2, bwm, UE + 3.2, false); });
+    // institute on three floors: the same timber skin, slabs and glazing stacked to +18.5 m
+    slats = [];
+    var UE0 = UE, TOP0 = TOP;
+    [[10.1, 14.3], [14.3, 18.5]].forEach(function (f, fi) {
+      UE = f[0]; TOP = f[1]; root = floorG[fi];
+      B(48, 84, 13.6, 13.4, 0.7, mat.stone, UE - 0.7); B(69.6, 84, 20.4, 13.4, 0.7, mat.stone, UE - 0.7); B(48, 63.6, 13.6, 10.4, 0.7, mat.stone, UE - 0.7); B(69.6, 63.6, 20.4, 10.4, 0.7, mat.stone, UE - 0.7); B(80, 74, 10, 10, 0.7, mat.stone, UE - 0.7); B(48, 74, 2, 10, 0.7, mat.stone, UE - 0.7);
+      skinX(48, 61.2, 96.5, [[50, 60]], false); skinX(70.0, 90, 96.5, [[71.4, 79], [83.6, 88.4]], false);
+      skinX(48, 61.2, 63.5, [[49.5, 53.5]], true); skinX(70.0, 90, 63.5, [[70.4, 75.6], [76.8, 79.2], [80, 83.2, 'door'], [84, 89]], true);
+      skinY(63.5, 74, 47.9); skinY(84, 97.2, 47.9); skinYo(63.5, 97.4, 89.6, [[65, 67], [69.5, 72.5], [75, 78], [80.5, 83.5], [86, 89]]);
+      flushSlats(); slats = [];
+      backWall(48, 61.4, 96.15, [[50, 60]]); backWall(69.9, 89.9, 96.15, [[71.4, 79], [83.6, 88.4]]);
+      backWall(48, 61.4, 63.75, [[49.5, 53.5]]); backWall(69.9, 89.9, 63.75, [[70.4, 75.6], [76.8, 79.2], [80, 83.2, 'door'], [84, 89]]);
+      B(61.3, 63.8, 0.3, 8.2, UH, mat.dtimber, UE); B(69.5, 63.8, 0.3, 8.2, UH, mat.dtimber, UE);
+      B(61.3, 86, 0.3, 11, UH, mat.glass, UE, false); B(69.5, 86, 0.3, 11, UH, mat.glass, UE, false);
+      B(48, 84.0, 13.6, 0.1, UH, mat.glass, UE, false); B(69.6, 84.0, 20.4, 0.1, UH, mat.glass, UE, false); B(48, 73.9, 13.6, 0.1, UH, mat.glass, UE, false); B(69.6, 73.9, 10.4, 0.1, UH, mat.glass, UE, false);
+    });
+    UE = UE0; TOP = 18.5; root = mallG;
     // terraces behind the pills
     [[71.4, 79]].forEach(function (r) {
       B(r[0], 91.2, r[1] - r[0], 0.15, 3.8, mat.glass, UE + 0.1, false);
@@ -678,10 +846,11 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     // arched gate portals, glass bridges
     gateFrames(85, 96.6); gateFrames(63.6, 74.2);
     // tall steel gantry over the gate carries the name
-    B(61.2, 96.7, 0.4, 0.4, 14, mat.corten); B(69.4, 96.7, 0.4, 0.4, 14, mat.corten); B(61.2, 96.7, 8.6, 0.4, 0.4, mat.corten, 13.6); B(61.2, 96.7, 8.6, 0.4, 0.3, mat.corten, 10.3);
-    bar(P(61.6, 97.1, 10.5), P(69.4, 97.1, 13.6), 0.05, mat.steelD); bar(P(69.4, 97.1, 10.5), P(61.6, 97.1, 13.6), 0.05, mat.steelD);
-    sign('NTT Mall', 65.6, 96.55, 11.9, 6.6, 1.2, '#3f2a1a', '#f6ead8', true);
-    B(61.2, 63.6, 0.4, 0.4, 12, mat.corten); B(69.4, 63.6, 0.4, 0.4, 12, mat.corten); B(61.2, 63.6, 8.6, 0.4, 0.4, mat.corten, 11.6);
+    B(61.2, 96.7, 0.4, 0.4, 20.5, mat.corten); B(69.4, 96.7, 0.4, 0.4, 20.5, mat.corten); B(61.2, 96.7, 8.6, 0.4, 0.4, mat.corten, 20.1); B(61.2, 96.7, 8.6, 0.4, 0.3, mat.corten, 16.8);
+    bar(P(61.6, 97.1, 17.0), P(69.4, 97.1, 20.1), 0.05, mat.steelD); bar(P(69.4, 97.1, 17.0), P(61.6, 97.1, 20.1), 0.05, mat.steelD);
+    sign('NTT Mall', 65.6, 96.55, 18.4, 6.6, 1.2, '#3f2a1a', '#f6ead8', true);
+    B(61.2, 63.6, 0.4, 0.4, 20.5, mat.corten); B(69.4, 63.6, 0.4, 0.4, 20.5, mat.corten); B(61.2, 63.6, 8.6, 0.4, 0.4, mat.corten, 20.1); B(61.2, 63.6, 8.6, 0.4, 0.3, mat.corten, 16.8);
+    bar(P(61.6, 63.3, 17.0), P(69.4, 63.3, 20.1), 0.05, mat.steelD); bar(P(69.4, 63.3, 17.0), P(61.6, 63.3, 20.1), 0.05, mat.steelD); sign('NTT Mall', 65.6, 63.35, 18.4, 6.6, 1.2, '#3f2a1a', '#f6ead8', true, Math.PI);
     B(61.6, 84, 8, 2, 3.3, mat.glass, UE, false); B(61.2, 83.6, 8.8, 2.8, 0.4, mat.timber, UE + 3.3);
     B(61.6, 72, 8, 2, 3.3, mat.glass, UE, false); B(61.2, 71.6, 8.8, 2.8, 0.4, mat.timber, UE + 3.3);
     for (var gl = 62; gl < 69.6; gl += 0.9) { var gb = new THREE.Mesh(new THREE.SphereGeometry(0.06, 6, 6), mat.lamp); gb.position.copy(P(gl, 78, 8.6)); root.add(gb); var gb2 = gb.clone(); gb2.position.copy(P(gl, 92.5, 8.2)); root.add(gb2); }
@@ -699,22 +868,29 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     for (var sp3 = 0; sp3 < 10; sp3++) { var sx = 50 + rnd() * 40, sy = 97 + rnd() * 2.6; walkers.push([person(sx, sy, 0.14), [[sx, sy], [Math.min(92, Math.max(46, sx + (sp3 % 2 ? 22 : -22))), sy]]]); }
     pick(48, 74, 42, 10, 3, 0, 'Courtyard', 'Open-air heart of the mall under a timber pergola: trees, water, a gold sculpture and a coffee kiosk.');
     // institute tower at the rear: glass box in an exposed steel frame, with the main U-shaped stair and the lift shaft visible inside
-    B(78.7, 57.4, 5, 6, 13.5, mat.glass, 0, false);
-    [[78.6, 57.3], [83.4, 57.3], [78.6, 63.2], [83.4, 63.2]].forEach(function (c) { B(c[0], c[1], 0.3, 0.3, 13.6, mat.steelD); });
-    for (var fl = 0; fl <= 4; fl++) { var fe = fl * 3.375; B(78.6, 57.3, 5.1, 0.25, 0.25, mat.steelD, fe); B(78.6, 63.25, 5.1, 0.25, 0.25, mat.steelD, fe); B(78.6, 57.3, 0.25, 6.1, 0.25, mat.steelD, fe); B(83.45, 57.3, 0.25, 6.1, 0.25, mat.steelD, fe); }
-    for (var bf = 0; bf < 4; bf++) { var b0 = bf * 3.375, b1 = b0 + 3.375;
+    B(78.7, 57.4, 5, 6, 19.9, mat.glass, 0, false);
+    [[78.6, 57.3], [83.4, 57.3], [78.6, 63.2], [83.4, 63.2]].forEach(function (c) { B(c[0], c[1], 0.3, 0.3, 20.0, mat.steelD); });
+    for (var fl = 0; fl <= 6; fl++) { var fe = fl * 3.375; B(78.6, 57.3, 5.1, 0.25, 0.25, mat.steelD, fe); B(78.6, 63.25, 5.1, 0.25, 0.25, mat.steelD, fe); B(78.6, 57.3, 0.25, 6.1, 0.25, mat.steelD, fe); B(83.45, 57.3, 0.25, 6.1, 0.25, mat.steelD, fe); }
+    for (var bf = 0; bf < 6; bf++) { var b0 = bf * 3.375, b1 = b0 + 3.375;
       bar(P(78.7, 57.2, b0 + 0.1), P(83.7, 57.2, b1 - 0.1), 0.045, mat.corten); bar(P(83.7, 57.2, b0 + 0.1), P(78.7, 57.2, b1 - 0.1), 0.045, mat.corten);
       bar(P(83.8, 57.4, b0 + 0.1), P(83.8, 63.4, b1 - 0.1), 0.045, mat.corten); bar(P(83.8, 63.4, b0 + 0.1), P(83.8, 57.4, b1 - 0.1), 0.045, mat.corten); }
-    B(77.8, 56.5, 6.8, 7.8, 0.35, mat.timber, 13.6);
+    B(77.8, 56.5, 6.8, 7.8, 0.35, mat.timber, 20.25);
     var RS = 5.9 / 36;
     function flightB(x, w, py0, dir, n, top0, drise) { for (var k = 0; k < n; k++) { var pa = py0 + dir * k * 0.25, lo = dir > 0 ? pa : pa - 0.25; B(x, lo, w, 0.23, top0 + drise * k * RS, mat.stone, 0, false); B(x - 0.04, lo, w + 0.08, 0.04, 0.05, mat.timber, top0 + drise * k * RS, false); } }
     flightB(79.0, 1.2, 63.0, -1, 17, RS, 1); B(79.0, 57.55, 2.6, 1.2, 2.95, mat.stone); flightB(80.4, 1.2, 58.75, 1, 17, 2.95 + RS, 1);
     [79.0, 80.2, 80.4, 81.6].forEach(function (rx) { bar(P(rx, 63.0, 1.0), P(rx, 58.75, 3.95), 0.03, mat.steelD); });
     [80.4, 81.6].forEach(function (rx) { bar(P(rx, 58.75, 4.0), P(rx, 63.0, 6.9), 0.03, mat.steelD); });
-    B(82.0, 57.6, 1.6, 2.2, 13, mat.glass, 0, false); [[82.0, 57.6], [83.55, 57.6], [82.0, 59.75], [83.55, 59.75]].forEach(function (c) { B(c[0], c[1], 0.06, 0.06, 13, mat.steelD); });
+    // the main stair continues up to the second and third floors (thin treads)
+    function flightT(x, w, py0, dir, n, e0) { for (var k = 0; k < n; k++) { var pa = py0 + dir * k * 0.25, lo = dir > 0 ? pa : pa - 0.25; B(x, lo, w, 0.23, 0.1, mat.stone, e0 + (k + 1) * RS - 0.1, false); } }
+    [5.9, 10.1].forEach(function (e0) {
+      flightT(79.0, 1.2, 63.0, -1, 13, e0); B(79.0, 58.55, 2.6, 1.2, 0.18, mat.stone, e0 + 13 * RS - 0.18, false); flightT(80.4, 1.2, 59.75, 1, 13, e0 + 13 * RS);
+      [79.0, 80.2].forEach(function (rx) { bar(P(rx, 63.0, e0 + 0.9), P(rx, 59.75, e0 + 13 * RS + 0.9), 0.03, mat.steelD); }); [80.4, 81.6].forEach(function (rx) { bar(P(rx, 59.75, e0 + 13 * RS + 0.9), P(rx, 63.0, e0 + 26 * RS + 0.9), 0.03, mat.steelD); });
+      B(78.8, 61.0, 0.04, 2.2, 1.0, mat.glass, e0, false);
+    });
+    B(82.0, 57.6, 1.6, 2.2, 19.9, mat.glass, 0, false); [[82.0, 57.6], [83.55, 57.6], [82.0, 59.75], [83.55, 59.75]].forEach(function (c) { B(c[0], c[1], 0.06, 0.06, 19.9, mat.steelD); });
     B(82.2, 57.8, 1.2, 1.8, 2.2, mat.panel, 0.1, false); B(82.2, 57.8, 1.2, 1.8, 2.2, mat.panel, 6.0, false);
     sign('Elevador', 82.8, 59.85, 2.6, 1.6, 0.5, '#2f6fa3', '#ffffff', true); sign('Escada', 79.8, 63.55, 2.6, 1.6, 0.5, '#2f6fa3', '#ffffff', true);
-    sign('Institute', 81.2, 56.4, 10.4, 5.4, 1.1, '#3f2a1a', '#f6ead8', true, Math.PI);
+    sign('Institute', 81.2, 56.4, 17.2, 5.4, 1.1, '#3f2a1a', '#f6ead8', true, Math.PI);
     pick(78.7, 57.4, 5, 6, 13, 0, 'Institute entrance tower', 'Glass tower on the parking side: a U-shaped stair with 36 steps and a half landing, and an accessible lift. It opens straight onto the east foyer, so nobody walks through reception or the offices.');
     // institute interior (visible when the roof is opened): rooms, labels, picking
     var ROOMS = [
@@ -727,12 +903,13 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
       ['Reception', 76.4, 66.5, 3.6, 5.5, 0, 'A destination off the foyer, nobody has to pass through it.'], ['Management and secretariat', 83.2, 63.6, 6.8, 4.4, 0, 'Director and secretariat with their own WC and a door onto the foyer.'], ['Staff room', 83.2, 68, 6.8, 4, 0, 'Teachers room with lockers and desks, with two staff WCs next to it.'], ['Infirmary', 76.4, 63.6, 3.6, 2.9, 0, 'First-aid room next to the reception.']
     ];
     ROOMS.forEach(function (R) { pick(R[1], R[2], R[3], R[4], 2.6, UE, 'Institute · ' + R[0], R[6], 'room'); });
-    pick(48, 84, 13.6, 13, 4.2, UE, 'The Institute', 'One continuous timber skin wraps the whole first floor: classrooms, lab, library, auditorium, two terraces and a roof with solar panels. Press Open interior to see the rooms.', 'shell');
-    pick(69.6, 84, 20.4, 13, 4.2, UE, 'The Institute', 'One continuous timber skin wraps the whole first floor: classrooms, lab, library, auditorium, two terraces and a roof with solar panels. Press Open interior to see the rooms.', 'shell');
-    pick(48, 63.6, 13.6, 10.4, 4.2, UE, 'The Institute', 'One continuous timber skin wraps the whole first floor: classrooms, lab, library, auditorium, two terraces and a roof with solar panels. Press Open interior to see the rooms.', 'shell');
-    pick(69.6, 63.6, 20.4, 10.4, 4.2, UE, 'The Institute', 'One continuous timber skin wraps the whole first floor: classrooms, lab, library, auditorium, two terraces and a roof with solar panels. Press Open interior to see the rooms.', 'shell');
-    pick(80, 74, 10, 10, 4.2, UE, 'The Institute', 'The east link joins both bars and holds the auditorium. Press Open interior to see the rooms.', 'shell');
+    pick(48, 84, 13.6, 13, 12.6, UE, 'The Institute', 'Three floors under one timber skin. Floor 1 is the public floor (reception, library, café, labs, toilets), floor 2 is classrooms and labs, floor 3 is classrooms, direction, staff and a multipurpose hall. Use the floor buttons to open each level.', 'shell');
+    pick(69.6, 84, 20.4, 13, 12.6, UE, 'The Institute', 'Three floors under one timber skin. Floor 1 is the public floor (reception, library, café, labs, toilets), floor 2 is classrooms and labs, floor 3 is classrooms, direction, staff and a multipurpose hall. Use the floor buttons to open each level.', 'shell');
+    pick(48, 63.6, 13.6, 10.4, 12.6, UE, 'The Institute', 'Three floors under one timber skin. Floor 1 is the public floor (reception, library, café, labs, toilets), floor 2 is classrooms and labs, floor 3 is classrooms, direction, staff and a multipurpose hall. Use the floor buttons to open each level.', 'shell');
+    pick(69.6, 63.6, 20.4, 10.4, 12.6, UE, 'The Institute', 'Three floors under one timber skin. Floor 1 is the public floor (reception, library, café, labs, toilets), floor 2 is classrooms and labs, floor 3 is classrooms, direction, staff and a multipurpose hall. Use the floor buttons to open each level.', 'shell');
+    pick(80, 74, 10, 10, 12.6, UE, 'The Institute', 'The east link joins both bars and holds the auditorium. Press Open interior to see the rooms.', 'shell');
 
+    root = stG;
     /* ---- FUEL STATION ---- */
     var shops = [[4, 'Convenience', 0xe9e3d5, '#e0ac2c', '#23201c'], [16, 'Tyre shop', 0xb9c0c6, '#2f3a44', '#ffffff']];
     shops.forEach(function (sh) {
@@ -798,8 +975,7 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     pick(16, 50, 12, 12, 4.4, 0, 'Tyre shop', 'Tyre fitting and repair with a service lane in front.');
     pick(28, 50, 12, 12, 4.4, 0, 'Car wash', 'Two wash bays with a queue lane that does not block the pumps.');
     pick(11.5, 71.5, 25, 17, 6.6, 0, 'Fuel canopy', '3 islands, 6 pumps. Tanks sit under the canopy; tankers unload at the fill point on the east side via the shared driveway.');
-    pick(46, 46, 44, 18, 2, 0, 'Customer parking', '32 bays behind the mall, facing the rear arcade. Reached by the shared driveway, so shoppers enter from the back.');
-    pick(2, 14, 98, 30, 1, 0, 'Truck apron', '30 m deep. A 16.5 m semi swings on a 12.5 m radius and reverses straight into any dock. Separate truck lane, no mixing with customers.');
+    root = oldG;
     // lamps and planting
     [14, 38, 56, 82].forEach(function (lx) { lampPost(lx, 99.2, 8); });
     [60, 68, 76].forEach(function (lx) { lampPost(lx, 46.5, 7); });
@@ -813,9 +989,12 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
 
     // parked cars
     [47, 58].forEach(function (yy, ri) { for (var k = 0; k < 16; k++) { var pcx = 48.2 + 1.3 + k * 2.6; if (rnd() < 0.55 && !(pcx > 77 && pcx < 85 && yy > 56)) park(pcx, yy + 2.5, ri ? Math.PI : 0); } });
-    buildInterior();
+    buildInterior(); root = oldG;
     // bus shelter
     B(52, 97.4, 7, 1.4, 0.15, mat.timber, 2.8); B(52.2, 98.6, 0.15, 0.15, 2.8, mat.steel); B(58.6, 98.6, 0.15, 0.15, 2.8, mat.steel);
+    root = R0;
+    mallG.rotation.y = Math.PI; mallG.position.set(52, 0, 40);
+    stG.position.set(11, 0, 0);
   }
 
   /* ---------- traffic on the N4 ---------- */
@@ -836,15 +1015,16 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
 
   /* ---------- camera ---------- */
   var VIEWS = {
-    street:  { p: [-34, 19, 96], t: [-2, 3, 34] },
-    gate:    { p: [15.6, 2.4, 56], t: [15.6, 4.2, 20] },
-    mall:    { p: [40, 10, 62], t: [20, 6, 38] },
-    rear:    { p: [40, 9, -8], t: [19, 6, 26] },
-    station: { p: [-60, 20, 52], t: [-30, 2, 8] },
-    yard:    { p: [34, 24, 6], t: [-14, 2, -26] },
-    inst:    { p: [20, 64, 84], t: [19, 5, 32] },
-    aerial:  { p: [-80, 105, 150], t: [0, 0, 20] }
+    street:  { p: [-30, 18, 92], t: [12, 3, 30] },
+    gate:    { p: [33, 3.2, 56], t: [33, 9, 10] },
+    mall:    { p: [4, 12, 64], t: [36, 8, 12] },
+    rear:    { p: [4, 9, -4], t: [0, 5, -46] },
+    station: { p: [-46, 16, 62], t: [-17, 2, 18] },
+    yard:    { p: [48, 24, -2], t: [-4, 2, -46] },
+    inst:    { p: [62, 48, 70], t: [33, 9, 8] },
+    aerial:  { p: [-72, 125, 125], t: [4, 0, -6] }
   };
+
   var cur = { tx: 0, ty: 0, tz: 0, th: 0, ph: 1, r: 80 }, goal = {};
   function toSph(v) {
     var d = new THREE.Vector3(v.p[0] - v.t[0], v.p[1] - v.t[1], v.p[2] - v.t[2]);
@@ -872,7 +1052,7 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
   });
   stage.addEventListener('wheel', function (e) { e.preventDefault(); goal.r *= 1 + e.deltaY * 0.0012; clampG(); }, { passive: false });
   document.getElementById('views').addEventListener('click', function (e) { if (e.target.dataset.v) go(e.target.dataset.v); });
-  document.getElementById('inst').addEventListener('click', function (e) { if (e.target.dataset.i) setInst(e.target.dataset.i === '1'); });
+  document.getElementById('inst').addEventListener('click', function (e) { if (e.target.dataset.f) setFloor(+e.target.dataset.f); });
   document.getElementById('modes').addEventListener('click', function (e) { if (e.target.dataset.m) setMode(e.target.dataset.m); });
 
   function resize() { if (frozen) return; var w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
@@ -884,24 +1064,29 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     root.add(g); movers.push({ g: g, pts: pts, spd: spd, mode: mode, i: 0, dir: 1, wait: delay || 0, walk: walk, y0: g.position.y, ph: Math.random() * 6, cx: pts[0][0], cy: pts[0][1], rot: 0 });
     g.position.set(pts[0][0] - 50, g.position.y, pts[0][1] - 50); if (mode === 'loop') g.visible = false;
   }
-  walkers.forEach(function (w) { mover(w[0], w[1], 0.9 + Math.random() * 0.5, 'ping', Math.random() * 6, true); });
-  // pedestrians at the station shop and the warehouse apron
-  [[10, 63.5, 10, 69.5], [14, 63.5, 18, 69.5], [38, 44, 38, 62]].forEach(function (a, i) { mover(person(a[0], a[1], 0.14), [[a[0], a[1]], [a[2], a[3]]], 1.0, 'ping', i * 1.7, true); });
-  [[24, 18, 24, 32], [44, 18, 44, 32], [64, 20, 64, 30], [78, 20, 78, 32]].forEach(function (a, i) { mover(person(a[0], a[1], 0.14), [[a[0], a[1]], [a[2], a[3]]], 1.1, 'ping', i * 1.3, true); });
-  // fuel station cars: in on the west lane, pump, out on the east lane; one goes through the wash tunnel
-  var fcol = [0x9aa3a8, 0x7a2b2b, 0x2d4a6b, 0xd8d6d0, 0x1f2a36, 0xc9b27a];
-  [[17.5, 80, 0], [20.5, 84, 9], [17.5, 76, 18]].forEach(function (pp, i) {
-    mover(car(fcol[i]), [[8, 101], [8, 92], [8, pp[1]], [pp[0], pp[1], 5], [24, pp[1]], [24, 101]], 4.0, 'loop', pp[2]);
-  });
-  [0, 14].forEach(function (d, i) {
-    mover(car(fcol[3 + i]), [[8, 101], [8, 69], [31.5, 69], [31.5, 62, 2], [31.5, 49, 3], [31.5, 47.8], [37.5, 47.8], [37.5, 69], [37.5, 101]], 3.2, 'loop', 4 + d);
-  });
-  // warehouse trucks: enter on the truck lane (x 94.5), cross the apron, turn, leave on x 98
-  var tcol = [0x2d4a6b, 0x7a2b2b, 0xd4891c, 0x3a3a3a];
-  tcol.forEach(function (c, i) {
-    var tk = semi(c, i === 1), a = i % 2 ? [[94.5, 101], [94.5, 44], [88, 43], [10, 43, 4], [6, 38], [10, 32.7], [88, 32.7], [98, 36], [98, 101]] : [[94.5, 101], [94.5, 44], [88, 43], [48, 43, 3], [44, 38], [48, 32.7], [88, 32.7], [98, 36], [98, 101]];
-    mover(tk, a, 4.5, 'loop', i * 12);
-  });
+  function setupMovers() {
+    var XM = function (p) { var q = p.slice(); q[0] = 152 - p[0]; q[1] = 140 - p[1]; return q; };          // old mall coordinates -> rotated and moved mall
+    var SX = function (a) { return a.map(function (p) { var q = p.slice(); q[0] += 11; return q; }); };       // old station coordinates -> station moved 11 m east
+    walkers.forEach(function (w) { mover(w[0], w[1].map(XM), 0.9 + Math.random() * 0.5, 'ping', Math.random() * 6, true); });
+    [[63, 94.6, 70, 85], [78, 94.6, 72, 85], [92, 94.6, 98, 86], [102, 86, 102, 94]].forEach(function (a, i) { mover(person(a[0], a[1], 0.14), [[a[0], a[1]], [a[2], a[3]]], 1.0, 'ping', i * 1.1, true); });
+    [[10, 63.5, 10, 69.5], [14, 63.5, 18, 69.5], [38, 44, 38, 62]].forEach(function (a, i) { mover(person(a[0] + 11, a[1], 0.14), [[a[0] + 11, a[1]], [a[2] + 11, a[3]]], 1.0, 'ping', i * 1.7, true); });
+    [[30, 11, 30, 30], [56, 11, 56, 30], [80, 12, 80, 30], [100, 11, 100, 26]].forEach(function (a, i) { mover(person(a[0], a[1], 0.14), [[a[0], a[1]], [a[2], a[3]]], 1.1, 'ping', i * 1.3, true); });
+    var fcol = [0x9aa3a8, 0x7a2b2b, 0x2d4a6b, 0xd8d6d0, 0x1f2a36, 0xc9b27a];
+    [[17.5, 80, 0], [20.5, 84, 9], [17.5, 76, 18]].forEach(function (pp, i) {
+      mover(car(fcol[i]), SX([[8, 101], [8, 92], [8, pp[1]], [pp[0], pp[1], 5], [24, pp[1]], [24, 101]]), 4.0, 'loop', pp[2]);
+    });
+    [0, 14].forEach(function (d, i) {
+      mover(car(fcol[3 + i]), SX([[8, 101], [8, 69], [31.5, 69], [31.5, 62, 2], [31.5, 49, 3], [31.5, 47.8], [37.5, 47.8], [37.5, 69], [37.5, 101]]), 3.2, 'loop', 4 + d);
+    });
+    // customers: cars cruise the front car park of the mall
+    [[0, 0], [1, 7]].forEach(function (c) { mover(car(fcol[c[0] + 1]), [[65, 101], [65, 87], [101, 87], [101, 101]], 3.0, 'loop', c[1]); });
+    // warehouse trucks: enter by the left lane (x 2), swing through the yard, leave by the same lane (x 6)
+    var tcol = [0x2d4a6b, 0x7a2b2b, 0xd4891c, 0x3a3a3a];
+    tcol.forEach(function (c, i) {
+      var tk = semi(c, i === 1), a = [[2, 101], [2, 36], [10, 30], [100, 29], [104, 22], [98, 16], [12, 15.6], [6, 21], [6, 40], [6, 101]];
+      mover(tk, a, 4.5, 'loop', i * 12);
+    });
+  }
   function stepMovers(dt) {
     movers.forEach(function (m) {
       if (m.wait > 0) { m.wait -= dt; return; }
@@ -934,7 +1119,21 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
   }
 
   window.__n4 = { renderer: renderer, camera: camera, scene: scene, setMode: setMode, setInst: setInst, P: P, resize: resize, freeze: function (v) { frozen = v; if (!v) resize(); } };
-  function start() { build(); addTraffic(); setMode('dusk'); go('street', true); frame(); }
+  function buildDir() {
+    var el = document.getElementById('dir'), xs0 = [48, 54.8, 69.6, 76.4, 83.2];
+    var car = [['Café', 4], ['Pharmacy', 3], ['Mini-market', 2], ['Public WC', 1], ['Restaurant', 0]], back = [['Bank / ATM', 4], ['Phones', 3], ['Clothing', 2], ['Print', 1], ['Hardware', 0]];
+    var h = '<h4>Car park side</h4>'; car.forEach(function (c) { h += '<button data-k="c' + c[1] + '">' + c[0] + ' <span>· ground</span></button>'; });
+    h += '<h4>Courtyard</h4><button data-k="y">Beauty salon <span>· ground</span></button><button data-k="y">Coffee kiosk <span>· courtyard</span></button>';
+    h += '<h4>Back lane side</h4>'; back.forEach(function (c) { h += '<button data-k="b' + c[1] + '">' + c[0] + ' <span>· ground</span></button>'; });
+    h += '<h4>Institute</h4><button data-k="f1">Floor 1 · library, café, labs</button><button data-k="f2">Floor 2 · classrooms, labs</button><button data-k="f3">Floor 3 · hall, direction, staff</button>';
+    el.innerHTML = h;
+    el.addEventListener('click', function (e) { var k = e.target.closest('button') && e.target.closest('button').dataset.k; if (!k) return;
+      if (k[0] === 'f') { setFloor(+k[1]); return; } setFloor(4);
+      if (k === 'y') { VIEWS.focus = { p: [37, 9, 44], t: [37, 3, 10] }; } else { var si = +k[1], xc = 152 - (xs0[si] + 3.4) - 50; VIEWS.focus = k[0] === 'c' ? { p: [xc, 6.5, 52], t: [xc, 3.5, 28] } : { p: [xc, 6, -26], t: [xc, 3.5, -6.5] }; }
+      go('focus'); });
+    document.getElementById('dirbtn').onclick = function () { var v = el.hidden; el.hidden = !v; this.setAttribute('aria-pressed', v ? 'true' : 'false'); };
+  }
+  function start() { build(); setupMovers(); buildDir(); addTraffic(); setMode('dusk'); go('street', true); frame(); }
   if (document.fonts && document.fonts.load) document.fonts.load('700 40px "Barlow Condensed"').then(start, start); else start();
 })();
 </script>
