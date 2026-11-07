@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -57,17 +57,17 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
 </head>
 <body>
 <div id="stage"></div>
-<div id="load">A carregar o modelo BIM…</div>
+<div id="load">Loading the BIM model…</div>
 <div class="title"><a href="../">← INDICO DEVELOPMENTS</a><b>Katembe Ocean Views</b>
-<span>Coordenação 3D · arquitectura, estrutura e 12 instalações · <span class="ok" id="okline">0 conflitos</span></span></div>
-<div class="hint">Arrastar para rodar · roda ou pinça para zoom · clique num elemento</div>
+<span>3D coordination · architecture, structure and 12 services · <span class="ok" id="okline">0 clashes</span></span></div>
+<div class="hint">Drag to orbit · wheel or pinch to zoom · click an element</div>
 <div id="card" hidden></div>
 <div id="dir" hidden></div>
 <div class="bar">
-  <div class="grp" id="views" aria-label="Vistas"></div>
-  <div class="grp" id="floors" aria-label="Pisos"></div>
-  <div class="grp" id="modes" aria-label="Modo"></div>
-  <div class="grp"><button id="sysbtn" aria-pressed="false">Instalações e conflitos</button></div>
+  <div class="grp" id="views" aria-label="Views"></div>
+  <div class="grp" id="floors" aria-label="Floors"></div>
+  <div class="grp" id="modes" aria-label="Mode"></div>
+  <div class="grp"><button id="sysbtn" aria-pressed="false">Services and clashes</button></div>
   <div class="grp" id="light"></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -98,15 +98,15 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
   function B(x, y, z) { return new THREE.Vector3(x, z, -y); }
   var CEN = B(25, 3, 6); sun.target.position.copy(CEN);
 
-  var SYS = [['WATER-COLD', 'Água fria', '#1d74ff'], ['WATER-HOT', 'Água quente', '#ff2e3b'], ['SEWER', 'Esgotos', '#8a5a2b'],
-    ['VENT', 'Ventilação dos esgotos', '#c9a27a'], ['RAIN', 'Águas pluviais', '#00c2d6'], ['ELEC', 'Electricidade', '#ffb000'],
-    ['DATA', 'Telecomunicações', '#a24dff'], ['HVAC-REF', 'Climatização, frigorífico', '#20c060'], ['HVAC-COND', 'Condensados', '#8fe3a0'],
-    ['HVAC-DUCT', 'Condutas de ar', '#3fd18a'], ['FIRE', 'Segurança contra incêndio', '#ff1f6a'], ['GAS', 'Gás', '#e0c800']];
+  var SYS = [['WATER-COLD', 'Cold water', '#1d74ff'], ['WATER-HOT', 'Hot water', '#ff2e3b'], ['SEWER', 'Drainage', '#8a5a2b'],
+    ['VENT', 'Drainage vents', '#c9a27a'], ['RAIN', 'Rainwater', '#00c2d6'], ['ELEC', 'Electrical', '#ffb000'],
+    ['DATA', 'Telecom', '#a24dff'], ['HVAC-REF', 'Air conditioning, refrigerant', '#20c060'], ['HVAC-COND', 'Condensate', '#8fe3a0'],
+    ['HVAC-DUCT', 'Air ducts', '#3fd18a'], ['FIRE', 'Fire safety', '#ff1f6a'], ['GAS', 'Gas', '#e0c800']];
   var SYSN = {}; SYS.forEach(function (s) { SYSN[s[0]] = s; });
-  var PISO = ['Rés do chão', 'Piso 1', 'Piso 2', 'Piso 3', 'Piso 4', 'Cobertura'];
-  var GNAME = { wall: 'Paredes', slab: 'Lajes e pavimentos', struct: 'Pilares e vigas', glass: 'Vãos envidraçados', door: 'Portas',
-    stair: 'Escadas', rail: 'Guardas', lift: 'Elevador', proxy: 'Muretes e floreiras', roof: 'Cobertura', site: 'Arranjos exteriores',
-    lawn: 'Jardim', water: 'Piscina', found: 'Fundação, ensoleiramento geral' };
+  var PISO = ['Ground floor', 'Floor 1', 'Floor 2', 'Floor 3', 'Floor 4', 'Mezzanine', 'Roof'];
+  var GNAME = { wall: 'Walls', slab: 'Slabs and floors', struct: 'Columns and beams', glass: 'Glazing', door: 'Doors',
+    stair: 'Stairs', rail: 'Balustrades', lift: 'Lifts', proxy: 'Low walls and planters', roof: 'Roof', site: 'External works',
+    lawn: 'Garden', water: 'Pool', found: 'Raft foundation' };
   var ACOL = { wall: '#efebe4', slab: '#d9d2c5', struct: '#c9c1b3', glass: '#9fb8c4', door: '#a87b4f', stair: '#d6cfc2', rail: '#9fb8c4',
     lift: '#8a8a8a', proxy: '#c9c2b5', roof: '#cfc8bb', site: '#b9b09e', lawn: '#6f9a4c', water: '#4fb3c8', found: '#b0a898' };
 
@@ -145,10 +145,10 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
       }
     });
     scene.add(res[0].scene);
-    buildSleeves(); buildDir(); applyMode(); setView('Aérea', true); setLight(false);
+    buildSleeves(); buildDir(); applyMode(); setView('Aerial', true); setLight(false);
     document.getElementById('load').hidden = true;
-    var c = D.clash; document.getElementById('okline').textContent = (c.hard + c.mep_mep + c.embedded) + ' conflitos · ' + c.sleeves + ' mangas';
-  }).catch(function (e) { document.getElementById('load').textContent = 'Não foi possível carregar o modelo: ' + e; });
+    var c = D.clash; document.getElementById('okline').textContent = (c.hard + c.mep_mep + c.embedded) + ' clashes · ' + c.sleeves + ' sleeves';
+  }).catch(function (e) { document.getElementById('load').textContent = 'The model could not be loaded: ' + e; });
 
   function buildSleeves() {
     var geo = new THREE.TorusGeometry(1, 0.3, 8, 22);
@@ -178,19 +178,19 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     mep.forEach(function (o) { o.visible = sysOn[o.userData.s] !== false && mode !== 'struct'; });
     if (sleeves) sleeves.visible = showSleeves && mode !== 'struct' && mode !== 'arch';
     renderer.clippingPlanes = clipH === null ? [] : [new THREE.Plane(new THREE.Vector3(0, -1, 0), clipH)];
-    pressed('modes', { arch: 'Arquitectura', xray: 'Raio X', struct: 'Estrutura', mep: 'Só instalações' }[mode]);
+    pressed('modes', { arch: 'Architecture', xray: 'X-ray', struct: 'Structure', mep: 'Services only' }[mode]);
   }
 
   // ------------------------------------------------------------ cameras
   var VIEWS = {
-    'Aérea': [B(72, -52, 44), B(25, 3, 5)], 'Rua': [B(30, -42, 7), B(25, 0, 7)], 'Galeria': [B(50.6, -0.8, 5.3), B(30, -0.8, 5.6), 1],
-    'Elevador': [B(44, -9, 7.5), B(50.1, 1.3, 5.2), 1], 'T3': [B(3.5, -9, 15.5), B(5.5, 4.5, 3.6), 1], 'Cobertura': [B(30, -34, 30), B(25, 4, 13)],
-    'Mar': [B(22, 48, 12), B(25, 5, 7)]
+    'Aerial': [B(72, -52, 44), B(25, 3, 5)], 'Street': [B(30, -42, 7), B(25, 0, 7)], 'Restaurant': [B(12.5, 8.6, 18.6), B(34, 2.5, 15.4), 5],
+    'Lift tower': [B(44, -9, 7.5), B(51, 5.3, 5.2), 1], 'T3': [B(3.5, -9, 15.5), B(5.5, 4.5, 3.6), 1], 'Roof': [B(30, -34, 30), B(25, 4, 13)],
+    'Sea': [B(22, 48, 12), B(25, 5, 7)]
   };
   var tw = null;
   function setView(name, now) {
     var v = VIEWS[name]; if (!v) return;
-    if (v[2] && clipH === null) setFloor(1);
+    if (v[2] && clipH === null) setFloor(v[2]);
     // portrait screens: back the outside views off so the whole 54 m block fits the narrow frame
     var p1 = v[0].clone(), k = camera.aspect < 0.8 && !v[2] ? 1.3 : 1;
     if (k !== 1) p1.sub(v[1]).multiplyScalar(k).add(v[1]);
@@ -199,10 +199,10 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     pressed('views', name);
   }
   // ------------------------------------------------------------ floors (cut above the chosen floor, just under the slab above)
-  var FL = [['Fechado', null], ['Piso 4', 15.95], ['Piso 3', 12.33], ['Piso 2', 9.33], ['Piso 1', 6.33], ['R/C', 3.33]];
-  var FLN = ['R/C', 'Piso 1', 'Piso 2', 'Piso 3', 'Piso 4'];          // storey index → button
+  var FL = [['Closed', null], ['Mezzanine', 19.55], ['Floor 4', 15.95], ['Floor 3', 12.33], ['Floor 2', 9.33], ['Floor 1', 6.33], ['GF', 3.33]];
+  var FLN = ['GF', 'Floor 1', 'Floor 2', 'Floor 3', 'Floor 4', 'Mezzanine'];          // storey index → button
   function setFloor(k) {
-    var name = typeof k === 'number' ? FLN[k] : (k || 'Fechado');
+    var name = typeof k === 'number' ? FLN[k] : (k || 'Closed');
     var f = FL.filter(function (x) { return x[0] === name; })[0] || FL[0];
     clipH = f[1]; applyMode(); pressed('floors', f[0]);
   }
@@ -213,7 +213,7 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     hemi.intensity = d ? 0.35 : 0.85; sun.intensity = d ? 0.35 : 1.6;
     sun.color.set(d ? '#ffb27a' : '#fff3df'); sun.position.copy(CEN).add(d ? B(-60, 30, 25) : B(40, -30, 70));
     Object.keys(mepM).forEach(function (k) { mepM[k].emissiveIntensity = d ? 0.9 : 0.18; });
-    pressed('light', d ? 'Fim de tarde' : 'Dia');
+    pressed('light', d ? 'Dusk' : 'Day');
   }
 
   // ------------------------------------------------------------ UI
@@ -224,26 +224,26 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
   }
   function pressed(id, name) { [].forEach.call(document.getElementById(id).children, function (b) { b.setAttribute('aria-pressed', b.textContent === name ? 'true' : 'false'); }); }
   btns('views', Object.keys(VIEWS), function (n) { setView(n); });
-  btns('floors', FL.map(function (f) { return f[0]; }), function (n) { setFloor(n === 'Fechado' ? null : n); });
-  btns('modes', ['Arquitectura', 'Raio X', 'Estrutura', 'Só instalações'], function (n) {
-    mode = { 'Arquitectura': 'arch', 'Raio X': 'xray', 'Estrutura': 'struct', 'Só instalações': 'mep' }[n]; applyMode(); });
-  btns('light', ['Dia', 'Fim de tarde'], function (n) { setLight(n !== 'Dia'); });
+  btns('floors', FL.map(function (f) { return f[0]; }), function (n) { setFloor(n === 'Closed' ? null : n); });
+  btns('modes', ['Architecture', 'X-ray', 'Structure', 'Services only'], function (n) {
+    mode = { 'Architecture': 'arch', 'X-ray': 'xray', 'Structure': 'struct', 'Services only': 'mep' }[n]; applyMode(); });
+  btns('light', ['Day', 'Dusk'], function (n) { setLight(n !== 'Day'); });
   var dir = document.getElementById('dir'), sysbtn = document.getElementById('sysbtn');
   sysbtn.onclick = function () { dir.hidden = !dir.hidden; sysbtn.setAttribute('aria-pressed', dir.hidden ? 'false' : 'true');
     if (!dir.hidden && window.innerWidth <= 760) { card.hidden = true; unpick(); } };
   function buildDir() {
-    var c = D.clash, h = '<h4>Coordenação</h4>' +
-      '<div class="stat">Conflitos físicos <b>' + c.hard + '</b></div><div class="stat">Instalação contra instalação <b>' + c.mep_mep + '</b></div>' +
-      '<div class="stat">Tubos dentro de paredes ou lajes <b>' + c.embedded + '</b></div>' +
-      '<div class="stat">Elementos verificados <span>' + c.mep + ' + ' + c.arch + '</span></div>';
+    var c = D.clash, h = '<h4>Coordination</h4>' +
+      '<div class="stat">Hard clashes <b>' + c.hard + '</b></div><div class="stat">Service against service <b>' + c.mep_mep + '</b></div>' +
+      '<div class="stat">Pipes buried in walls or slabs <b>' + c.embedded + '</b></div>' +
+      '<div class="stat">Elements checked <span>' + c.mep + ' + ' + c.arch + '</span></div>';
     dir.innerHTML = h;
     var sb = document.createElement('button'); sb.setAttribute('aria-pressed', 'true');
-    sb.innerHTML = '<em style="background:#fff6c8;border:2px solid #e0c200"></em>Mangas e furos em paredes e lajes<span>' + c.sleeves + '</span>';
+    sb.innerHTML = '<em style="background:#fff6c8;border:2px solid #e0c200"></em>Sleeves and openings in walls and slabs<span>' + c.sleeves + '</span>';
     sb.onclick = function () { showSleeves = !showSleeves; sb.setAttribute('aria-pressed', showSleeves); applyMode(); };
     dir.appendChild(sb);
-    var h4 = document.createElement('h4'); h4.textContent = 'Instalações'; dir.appendChild(h4);
+    var h4 = document.createElement('h4'); h4.textContent = 'Services'; dir.appendChild(h4);
     var row = document.createElement('div'); row.className = 'row';
-    [['Todas', true], ['Nenhuma', false]].forEach(function (a) { var b = document.createElement('button'); b.textContent = a[0];
+    [['All', true], ['None', false]].forEach(function (a) { var b = document.createElement('button'); b.textContent = a[0];
       b.onclick = function () { SYS.forEach(function (s) { sysOn[s[0]] = a[1]; }); [].forEach.call(dir.querySelectorAll('[data-s]'), function (x) { x.setAttribute('aria-pressed', a[1]); }); applyMode(); };
       row.appendChild(b); });
     dir.appendChild(row);
@@ -259,14 +259,14 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
   var ray = new THREE.Raycaster(), mouse = new THREE.Vector2(), card = document.getElementById('card'), picked = null, down = null;
   function inPoly(x, y, p) { var c = false; for (var i = 0, j = p.length - 1; i < p.length; j = i++) {
     if ((p[i][1] > y) !== (p[j][1] > y) && x < (p[j][0] - p[i][0]) * (y - p[i][1]) / (p[j][1] - p[i][1]) + p[i][0]) c = !c; } return c; }
-  function n2(v) { return v.toFixed(2).replace('.', ','); }
+  function n2(v) { return v.toFixed(2); }
   function roomAt(x, y, z) {
-    var st = 0; for (var k = 0; k < 5; k++) if (D.elev[k] <= z + 0.4) st = k;
+    var st = 0; for (var k = 0; k < 6; k++) if (D.elev[k] <= z + 0.4) st = k;
     var r = D.rooms.filter(function (r) { return r.st === st && inPoly(x, y, r.p); });
     r.sort(function (a, b) { return a.a - b.a; }); return r[0];
   }
   function unpick() { if (picked) { picked.o.material = picked.m; picked = null; } }
-  function show(html) { card.innerHTML = '<button class="x" aria-label="Fechar">×</button>' + html; card.hidden = false;
+  function show(html) { card.innerHTML = '<button class="x" aria-label="Close">×</button>' + html; card.hidden = false;
     card.querySelector('.x').onclick = function () { card.hidden = true; unpick(); }; }
   renderer.domElement.addEventListener('pointerdown', function (e) { down = [e.clientX, e.clientY]; });
   renderer.domElement.addEventListener('pointerup', function (e) {
@@ -279,21 +279,21 @@ button[aria-pressed="true"] { background: var(--accent); color: #fff; }
     if (sleeves && sleeves.visible) targets.push(sleeves);
     var sh = ray.intersectObjects(targets, false).filter(cut);
     var ah = ray.intersectObjects(arch.filter(function (o) { return o.visible && o.userData.g !== 'site' && o.userData.g !== 'lawn'; }), false).filter(cut);
-    // installations win unless a solid element clearly hides them (only in Arquitectura / Estrutura, where walls are opaque)
+    // installations win unless a solid element clearly hides them (only in Architecture / Structure, where walls are opaque)
     var solid = mode === 'arch' || mode === 'struct';
     var hits = sh.length && (!solid || !ah.length || sh[0].distance <= ah[0].distance + 0.6) ? sh : ah;
     unpick();
     if (!hits.length) { card.hidden = true; return; }
     var h = hits[0], o = h.object, u = o.userData, bx = h.point.x, by = -h.point.z, bz = h.point.y, rm = roomAt(bx, by, bz);
-    var where = rm ? '<br><i>Espaço</i> ' + rm.l + (rm.u ? ' · fogo ' + rm.u : '') + ' · ' + n2(rm.a) + ' m²' : '';
+    var where = rm ? '<br><i>Space</i> ' + rm.l + (rm.u ? ' · unit ' + rm.u : '') + ' · ' + n2(rm.a) + ' m²' : '';
     if (u.k === 'm') {
       var d = D.mep[u.i]; picked = { o: o, m: o.material }; o.material = pickM;
-      show('<b>' + (d.sn || d.s) + '</b>' + d.fn + '<br><i>Elemento</i> ' + d.c.replace(/([a-z])([A-Z])/g, '$1 $2') + (d.z ? ' · ' + d.z : '') +
-        '<br><i>Piso</i> ' + PISO[d.st] + where + '<br><i>Código</i> ' + d.n);
+      show('<b>' + (d.sn || d.s) + '</b>' + d.fn + '<br><i>Element</i> ' + d.c.replace(/([a-z])([A-Z])/g, '$1 $2') + (d.z ? ' · ' + d.z : '') +
+        '<br><i>Floor</i> ' + PISO[d.st] + where + '<br><i>Code</i> ' + d.n);
     } else if (u.k === 's') {
       var s = D.sleeves[h.instanceId], sy = SYSN[s[3]];
-      show('<b>Manga · ' + (sy ? sy[1] : s[3]) + '</b>Atravessamento ' + (s[4] === 'Wall' ? 'de parede' : 'de laje') + ' com manga, Ø/lado ' + Math.round(s[6] * 1000) + ' mm.' +
-        '<br><i>Coordenadas</i> x ' + n2(s[0]) + ' · y ' + n2(s[1]) + ' · z ' + n2(s[2]) + where + '<br><i>Estado</i> previsto em obra, sem conflito');
+      show('<b>Sleeve · ' + (sy ? sy[1] : s[3]) + '</b>' + (s[4] === 'Wall' ? 'Wall' : 'Slab') + ' crossing with a sleeve, Ø/side ' + Math.round(s[6] * 1000) + ' mm.' +
+        '<br><i>Coordinates</i> x ' + n2(s[0]) + ' · y ' + n2(s[1]) + ' · z ' + n2(s[2]) + where + '<br><i>Status</i> built in, no clash');
     } else {
       show('<b>' + GNAME[u.g] + '</b><i>' + PISO[u.st] + '</i>' + where);
     }
