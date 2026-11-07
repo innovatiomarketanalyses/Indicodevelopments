@@ -1,0 +1,619 @@
+{
+ "categoria_provavel": "A",
+ "razoes": [
+  "zona costeira de dunas, a 186 m da água",
+  "há zonas húmidas ou mangal no terreno ou a menos de 1 km",
+  "27 espécies ameaçadas registadas num raio de cerca de 5 km"
+ ],
+ "areas_protegidas": [
+  {
+   "name": "Malhazine",
+   "desig": "Parque Ecológico",
+   "desig_eng": "Ecological park",
+   "desig_pt": "Ecological park",
+   "type": "National",
+   "iucn": "IV",
+   "year": 2012,
+   "area_km2": 5.7144142,
+   "inside": false,
+   "share": 0.0,
+   "dist_m": 14856.308530006
+  },
+  {
+   "name": "Maputo",
+   "desig": "Area de conservacao ambiental",
+   "desig_eng": "Environmental Protection Area",
+   "desig_pt": "Área de Protecção Ambiental",
+   "type": "National",
+   "iucn": "V",
+   "year": 2019,
+   "area_km2": 5731.74702206,
+   "inside": false,
+   "share": 0.0,
+   "dist_m": 20799.091589864143
+  },
+  {
+   "name": "iSimangaliso Wetland Park – Maputo National Park",
+   "desig": "World Heritage Site (natural or mixed)",
+   "desig_eng": "World Heritage Site (natural or mixed)",
+   "desig_pt": "Património Mundial (UNESCO)",
+   "type": "International",
+   "iucn": "",
+   "year": 1999,
+   "area_km2": 3977.09990037,
+   "inside": false,
+   "share": 0.0,
+   "dist_m": 21997.146940037357
+  },
+  {
+   "name": "Ponta do Ouro",
+   "desig": "Reserva Nacional",
+   "desig_eng": "National Reserve",
+   "desig_pt": "Reserva Nacional",
+   "type": "National",
+   "iucn": "IV",
+   "year": 2009,
+   "area_km2": 698.20172219,
+   "inside": false,
+   "share": 0.0,
+   "dist_m": 22362.335009141694
+  },
+  {
+   "name": "Maputo",
+   "desig": "Reserva Especial",
+   "desig_eng": "Special Reserve",
+   "desig_pt": "Reserva Especial",
+   "type": "National",
+   "iucn": "II",
+   "year": 1960,
+   "area_km2": 1039.69592683,
+   "inside": false,
+   "share": 0.0,
+   "dist_m": 23905.67981847095
+  }
+ ],
+ "habitats_terreno": [
+  [
+   "Pasto",
+   44.21052631578947
+  ],
+  [
+   "Construído",
+   29.47368421052631
+  ],
+  [
+   "Árvores",
+   26.31578947368421
+  ]
+ ],
+ "sensibilidade_pct": {
+  "Baixa": 78.94736842105263,
+  "Média": 21.052631578947366,
+  "Alta": 0.0
+ },
+ "riscos": [
+  [
+   "Inundação costeira e marés vivas",
+   "baixo",
+   "0 % do terreno abaixo de 5 m e 0 % abaixo de 10 m de altitude (erro ± 0,9 m). Ponto mais baixo a 21 m."
+  ],
+  [
+   "Subida do nível do mar",
+   "baixo",
+   "Com 1 m de subida até 2100 (cenário intermédio, ASSUMIDO) o mar não chega ao terreno se o ponto mais baixo está acima de 6 m. Aqui está a 21 m."
+  ],
+  [
+   "Erosão da duna",
+   "médio",
+   "0 % do terreno é encosta com mais de 30 % a menos de 1 km do mar. Areia sem vegetação move-se com o vento e a chuva."
+  ],
+  [
+   "Escoamento e ravinas",
+   "baixo",
+   "Não há linhas de água fortes dentro do terreno: a chuva espalha-se pela encosta."
+  ],
+  [
+   "Incêndio na mata",
+   "baixo",
+   "0,0 ha de árvores com mais de 5 m dentro do terreno. A época seca é o período de maior risco."
+  ],
+  [
+   "Ventos fortes e ciclones",
+   "médio",
+   "Costa do canal de Moçambique, sujeita a tempestades tropicais ocasionais. Dimensionar coberturas e vãos para vento forte (confirmar com o engenheiro)."
+  ],
+  [
+   "Água subterrânea salgada",
+   "médio",
+   "Furos perto do mar podem puxar água salgada. Testar a qualidade e o caudal antes de contar com furo próprio."
+  ]
+ ],
+ "especies_ameacadas": [
+  {
+   "cat": "CR",
+   "name": "Cedrela odorata",
+   "vern": "Cedar, Cigar-box wood, Spanish cedar, West Indian cedar",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 3,
+   "key": 3190511
+  },
+  {
+   "cat": "CR",
+   "name": "Hibiscus rosa-sinensis",
+   "vern": "Chinese Hibiscus",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 2,
+   "key": 3152559
+  },
+  {
+   "cat": "CR",
+   "name": "Emicocarpus fissifolius",
+   "vern": "",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 2,
+   "key": 3577390
+  },
+  {
+   "cat": "CR",
+   "name": "Gyps africanus",
+   "vern": "White-backed Vulture",
+   "class": "Aves",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 9487001
+  },
+  {
+   "cat": "EN",
+   "name": "Morus capensis",
+   "vern": "Cape Gannet",
+   "class": "Aves",
+   "kingdom": "Animalia",
+   "n": 4,
+   "key": 2480963
+  },
+  {
+   "cat": "EN",
+   "name": "Argyrosomus thorpei",
+   "vern": "squaretail kob",
+   "class": "",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 5212435
+  },
+  {
+   "cat": "EN",
+   "name": "Sagittarius serpentarius",
+   "vern": "Secretarybird",
+   "class": "Aves",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 5229409
+  },
+  {
+   "cat": "EN",
+   "name": "Pterocarpus indicus",
+   "vern": "Amboyna-wood",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 1,
+   "key": 5349242
+  },
+  {
+   "cat": "EN",
+   "name": "Dillenia philippinensis",
+   "vern": "Philippine dillenia",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 1,
+   "key": 5383895
+  },
+  {
+   "cat": "EN",
+   "name": "Solanum litoraneum",
+   "vern": "",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 1,
+   "key": 7930069
+  },
+  {
+   "cat": "EN",
+   "name": "Acroteriobatus leucospilus",
+   "vern": "Grayspottted Guitarfish",
+   "class": "Elasmobranchii",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 9514198
+  },
+  {
+   "cat": "VU",
+   "name": "Parablennius lodosus",
+   "vern": "mud blenny",
+   "class": "",
+   "kingdom": "Animalia",
+   "n": 5,
+   "key": 2395751
+  },
+  {
+   "cat": "VU",
+   "name": "Tephrosia forbesii",
+   "vern": "",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 5,
+   "key": 5341875
+  },
+  {
+   "cat": "VU",
+   "name": "Calidris ferruginea",
+   "vern": "Curlew Sandpiper",
+   "class": "Aves",
+   "kingdom": "Animalia",
+   "n": 3,
+   "key": 2481741
+  },
+  {
+   "cat": "VU",
+   "name": "Oreochromis mossambicus",
+   "vern": "Mozambique tilapia",
+   "class": "",
+   "kingdom": "Animalia",
+   "n": 2,
+   "key": 2372396
+  },
+  {
+   "cat": "VU",
+   "name": "Pluvialis squatarola",
+   "vern": "Black-bellied Plover",
+   "class": "Aves",
+   "kingdom": "Animalia",
+   "n": 2,
+   "key": 2480327
+  },
+  {
+   "cat": "VU",
+   "name": "Falco concolor",
+   "vern": "Sooty Falcon",
+   "class": "Aves",
+   "kingdom": "Animalia",
+   "n": 2,
+   "key": 2481061
+  },
+  {
+   "cat": "VU",
+   "name": "Epinephelus marginatus",
+   "vern": "Dusky grouper, Dusky Perch",
+   "class": "",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 2388507
+  },
+  {
+   "cat": "VU",
+   "name": "Rhizoprionodon acutus",
+   "vern": "Milk Shark",
+   "class": "Elasmobranchii",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 2417866
+  },
+  {
+   "cat": "VU",
+   "name": "Sphyrna zygaena",
+   "vern": "Smooth Hammerhead",
+   "class": "Elasmobranchii",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 2418794
+  },
+  {
+   "cat": "VU",
+   "name": "Dalatias licha",
+   "vern": "Kitefin shark, Darkie Charlie",
+   "class": "Elasmobranchii",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 2420911
+  },
+  {
+   "cat": "VU",
+   "name": "Bucorvus leadbeateri",
+   "vern": "Southern Ground-Hornbill",
+   "class": "Aves",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 2476041
+  },
+  {
+   "cat": "VU",
+   "name": "Araucaria heterophylla",
+   "vern": "Norfolk Island Pine",
+   "class": "Pinopsida",
+   "kingdom": "Plantae",
+   "n": 1,
+   "key": 2684969
+  },
+  {
+   "cat": "VU",
+   "name": "Ansellia africana",
+   "vern": "African Ansellia",
+   "class": "Liliopsida",
+   "kingdom": "Plantae",
+   "n": 1,
+   "key": 2842140
+  },
+  {
+   "cat": "VU",
+   "name": "Adenopodia schlechteri",
+   "vern": "",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 1,
+   "key": 2952373
+  },
+  {
+   "cat": "VU",
+   "name": "Hippocampus kuda",
+   "vern": "Spotted seahorse",
+   "class": "",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 5201037
+  },
+  {
+   "cat": "VU",
+   "name": "Aphanamixis polystachya",
+   "vern": "Pithraj Tree",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 1,
+   "key": 5597304
+  },
+  {
+   "cat": "NT",
+   "name": "Psydrax fragrantissimus",
+   "vern": "Tonga Quar",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 5,
+   "key": 2893084
+  },
+  {
+   "cat": "NT",
+   "name": "Eidolon helvum",
+   "vern": "Straw-coloured fruit bat",
+   "class": "Mammalia",
+   "kingdom": "Animalia",
+   "n": 4,
+   "key": 2432851
+  },
+  {
+   "cat": "NT",
+   "name": "Encephalartos ferox",
+   "vern": "Zululand cycad",
+   "class": "Cycadopsida",
+   "kingdom": "Plantae",
+   "n": 4,
+   "key": 2683828
+  },
+  {
+   "cat": "NT",
+   "name": "Conus nielsenae",
+   "vern": "",
+   "class": "Gastropoda",
+   "kingdom": "Animalia",
+   "n": 3,
+   "key": 5795664
+  },
+  {
+   "cat": "NT",
+   "name": "Scomberomorus commerson",
+   "vern": "Narrow-barred Spanish mackerel",
+   "class": "",
+   "kingdom": "Animalia",
+   "n": 2,
+   "key": 2374255
+  },
+  {
+   "cat": "NT",
+   "name": "Cinnyris neergaardi",
+   "vern": "Neergaard's Sunbird",
+   "class": "Aves",
+   "kingdom": "Animalia",
+   "n": 2,
+   "key": 6088159
+  },
+  {
+   "cat": "NT",
+   "name": "Chrysoblephus anglicus",
+   "vern": "Englishman seabream",
+   "class": "",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 2392432
+  },
+  {
+   "cat": "NT",
+   "name": "Stephanoaetus coronatus",
+   "vern": "Crowned Eagle",
+   "class": "Aves",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 2480391
+  },
+  {
+   "cat": "NT",
+   "name": "Phoeniconaias minor",
+   "vern": "Lesser Flamingo",
+   "class": "Aves",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 2481104
+  },
+  {
+   "cat": "NT",
+   "name": "Arenaria interpres",
+   "vern": "Ruddy Turnstone",
+   "class": "Aves",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 2481776
+  },
+  {
+   "cat": "NT",
+   "name": "Ciconia episcopus",
+   "vern": "Woolly-necked Stork",
+   "class": "Aves",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 2481918
+  },
+  {
+   "cat": "NT",
+   "name": "Eucalyptus robusta",
+   "vern": "Swampmahogany",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 1,
+   "key": 3176743
+  },
+  {
+   "cat": "NT",
+   "name": "Pseudobersama mossambicensis",
+   "vern": "False Bersama",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 1,
+   "key": 3852100
+  },
+  {
+   "cat": "NT",
+   "name": "Urothemis luciana",
+   "vern": "St Lucia Basker",
+   "class": "Insecta",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 5052237
+  },
+  {
+   "cat": "NT",
+   "name": "Promerops gurneyi",
+   "vern": "Gurney's Sugarbird",
+   "class": "Aves",
+   "kingdom": "Animalia",
+   "n": 1,
+   "key": 5229964
+  },
+  {
+   "cat": "NT",
+   "name": "Hyperacanthus microphyllus",
+   "vern": "Sand Thorny-Gardenia",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 1,
+   "key": 5334785
+  },
+  {
+   "cat": "NT",
+   "name": "Baphia kirkii",
+   "vern": "",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 1,
+   "key": 5352571
+  },
+  {
+   "cat": "NT",
+   "name": "Pristimera delagoensis",
+   "vern": "",
+   "class": "Magnoliopsida",
+   "kingdom": "Plantae",
+   "n": 1,
+   "key": 8319485
+  }
+ ],
+ "clima": {
+  "rain": [
+   152.52,
+   98.5925,
+   95.17,
+   63.9,
+   20.46,
+   17.7,
+   15.81,
+   13.950000000000001,
+   27.6,
+   50.529999999999994,
+   98.39999999999999,
+   122.45
+  ],
+  "rain_year": 777.0825,
+  "tmax": [
+   40.92,
+   42.0,
+   41.06,
+   39.37,
+   36.39,
+   33.93,
+   34.89,
+   38.33,
+   39.31,
+   41.52,
+   42.31,
+   41.66
+  ],
+  "tmin": [
+   15.87,
+   18.34,
+   17.24,
+   14.02,
+   10.22,
+   9.15,
+   10.31,
+   9.71,
+   11.45,
+   12.7,
+   13.49,
+   17.07
+  ],
+  "rh": 70.1,
+  "wind": 4.51,
+  "wind_max": 14.82,
+  "wd": 115.7,
+  "wd_m": [
+   124.8,
+   125.6,
+   128.4,
+   128.4,
+   117.4,
+   154.7,
+   133.0,
+   80.9,
+   95.6,
+   109.0,
+   105.8,
+   109.3
+  ],
+  "sun": 4.8972,
+  "years": "25-year Meteorological and Solar Monthly & Annual Climatologies (January 2001 - December 2025)",
+  "wet": [
+   0,
+   1,
+   2,
+   10,
+   11
+  ]
+ },
+ "perda_floresta_ha": 0.0,
+ "fontes_usadas": [
+  "wdpa",
+  "gbif",
+  "power",
+  "osm",
+  "gfc"
+ ],
+ "fontes_falharam": {}
+}
