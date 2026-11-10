@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Team | Malongane Beach Villas</title>
+<meta name="description" content="Malongane Beach Villas: 18 villas on a forested dune facing the Indian Ocean at Ponta Malongane, Mozambique, with a central members club and a beach club. Indico Developments.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--deep:#1f3236;--deep2:#173033;--ink:#1d2a2c;--muted:#5f6d6c;--line:#dfe3df;--sand:#c9a46a;--paper:#f7f5f0;--white:#fff;--font:'Outfit',system-ui,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--white);color:var(--ink);font:400 17px/1.6 var(--font)}
+a{color:inherit}img{max-width:100%;display:block}
+.top{background:var(--deep);color:#fff;text-align:center;position:sticky;top:0;z-index:20}
+.brand{display:block;padding:22px 16px 8px;font-weight:600;letter-spacing:.32em;font-size:clamp(15px,2.6vw,24px);text-decoration:none}
+.nav{display:flex;justify-content:center;gap:clamp(10px,4vw,56px);overflow-x:auto;padding:6px 16px 0;scrollbar-width:none}
+.nav a{padding:12px 4px 14px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:rgba(255,255,255,.62);white-space:nowrap;border-bottom:2px solid transparent}
+.nav a.on{color:#fff;border-color:var(--sand)}
+.lang{position:absolute;right:16px;top:20px;font-size:12px;letter-spacing:.12em;background:none;border:1px solid rgba(255,255,255,.35);color:#fff;padding:5px 10px;border-radius:20px;cursor:pointer}
+.hero{position:relative;min-height:78vh;display:flex;align-items:flex-end;color:#fff;background:#000 center/cover no-repeat}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(10,20,22,.82))}
+.hero .in{position:relative;z-index:1;padding:0 max(16px,6vw) 56px;max-width:980px}
+.kick{font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--sand);font-weight:500}
+h1{font-weight:600;font-size:clamp(38px,6.4vw,76px);line-height:1.02;margin:12px 0 14px;letter-spacing:-.01em}
+h2{font-weight:600;font-size:clamp(30px,4.4vw,52px);line-height:1.08;margin:10px 0 18px;letter-spacing:-.01em}
+h3{font-weight:600;font-size:21px;margin:0 0 6px}
+.lead{font-size:clamp(17px,1.6vw,20px);color:var(--muted);max-width:760px}
+.hero .lead{color:rgba(255,255,255,.86)}
+section{padding:clamp(56px,8vw,110px) max(16px,6vw)}
+.c{max-width:1180px;margin:0 auto}.center{text-align:center}.center .lead{margin:0 auto}
+.paper{background:var(--paper)}.dark{background:var(--deep);color:#fff}.dark .lead{color:rgba(255,255,255,.75)}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:34px}
+.why div{border-top:2px solid var(--sand);padding-top:18px}.why p{color:var(--muted);margin:0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px;margin-top:34px}
+.stat b{display:block;font-size:clamp(40px,5vw,62px);font-weight:600;line-height:1;color:var(--deep)}
+.dark .stat b{color:#fff}.stat span{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}.dark .stat span{color:rgba(255,255,255,.65)}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:clamp(24px,4vw,60px);align-items:center}
+.split img{border-radius:6px;aspect-ratio:4/3;object-fit:cover;width:100%}
+.cats{display:grid;gap:26px;margin-top:30px}
+.cat{border:1px solid var(--line);border-radius:8px;overflow:hidden;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}
+.cat img{height:100%;min-height:240px;object-fit:cover}.cat .tx{padding:26px}
+.cat .n{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--sand);font-weight:600}
+.cat ul{list-style:none;padding:0;margin:14px 0 0}.cat li{padding:10px 0;border-top:1px solid var(--line)}.cat li b{display:block;font-weight:500}.cat li span{color:var(--muted);font-size:15px}
+.total{margin-top:30px;text-align:center}.total b{font-size:64px;font-weight:600;color:var(--deep);display:block;line-height:1}
+.villas{display:grid;gap:30px;margin-top:30px}
+.villa{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.villa .im{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr))}
+.villa .im img{width:100%;height:100%;min-height:260px;object-fit:cover;background:#f2f0ea}
+.villa .im img.plan{object-fit:contain;padding:12px}
+.villa .tx{padding:26px}.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:16px 0}
+.facts div{background:var(--paper);padding:12px;border-radius:6px}.facts b{display:block;font-size:22px;font-weight:600}.facts span{font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.price{font-size:15px;color:var(--muted)}.price b{color:var(--ink)}
+.feat{columns:2 240px;color:var(--muted);font-size:15px;padding-left:18px;margin:10px 0 0}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:12px;margin-top:26px}
+.gal img{aspect-ratio:16/10;object-fit:cover;border-radius:6px;width:100%}
+#v3{position:relative;height:min(70vh,640px);min-height:360px;background:#1b2620;border-radius:8px;overflow:hidden;margin-top:24px}
+#c3{width:100%;height:100%;display:block;touch-action:none}#views{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.faq details{border-top:1px solid var(--line);padding:18px 0}.faq summary{cursor:pointer;font-weight:500;font-size:18px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary:after{content:"+";color:var(--sand);font-size:24px;line-height:1}.faq details[open] summary:after{content:"–"}.faq p{color:var(--muted);margin:12px 0 0}
+.cta{background:var(--deep2);color:#fff;text-align:center}
+.btn{display:inline-block;background:var(--sand);color:#1d1a14;text-decoration:none;font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:14px;padding:18px 34px;border-radius:40px;margin-top:22px}
+.btn.wa:before{content:"";display:inline-block;width:18px;height:18px;margin:-3px 10px 0 0;vertical-align:middle;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2s-1 .2-3.4-.7-3.9-3.4-4-3.6-1-1.3-1-2.5.6-1.8.9-2 .5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.1-.3.3-.1.6s.8 1.3 1.7 2.1c1.2 1 2.1 1.3 2.4 1.5s.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.8.9c.3.1.5.2.5.3s.1.6-.1 1.2z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2s-1 .2-3.4-.7-3.9-3.4-4-3.6-1-1.3-1-2.5.6-1.8.9-2 .5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.1-.3.3-.1.6s.8 1.3 1.7 2.1c1.2 1 2.1 1.3 2.4 1.5s.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.8.9c.3.1.5.2.5.3s.1.6-.1 1.2z'/%3E%3C/svg%3E") center/contain no-repeat}
+.cta small{display:block;margin-top:12px;color:rgba(255,255,255,.6)}
+.people{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:22px;margin-top:28px}
+.person{border:1px solid var(--line);border-radius:8px;padding:24px}.person .r{color:var(--sand);font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.person p{color:var(--muted)}
+.quote{border-left:3px solid var(--sand);padding:4px 0 4px 18px;margin:18px 0;color:var(--muted)}
+foot,footer{display:block;padding:34px max(16px,6vw);font-size:13px;color:#7c8786;background:#f2f1ec}
+@media(max-width:640px){.lang{top:12px;right:10px}.brand{padding-top:40px}}
+</style>
+<script>
+(function(){const K='mv-lang';let L='en';try{L=localStorage.getItem(K)||'en'}catch(e){}
+function apply(){document.documentElement.lang=L==='pt'?'pt-PT':'en';document.querySelectorAll('[data-pt]').forEach(el=>{if(!el.dataset.en)el.dataset.en=el.innerHTML;el.innerHTML=L==='pt'?el.dataset.pt:el.dataset.en});
+ const b=document.getElementById('lang');if(b)b.textContent=L==='pt'?'EN':'PT'}
+window.addEventListener('DOMContentLoaded',()=>{apply();const b=document.getElementById('lang');if(b)b.onclick=()=>{L=L==='pt'?'en':'pt';try{localStorage.setItem(K,L)}catch(e){}apply()}})})();
+</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="../">MALONGANE BEACH VILLAS</a><button class="lang" id="lang" type="button">PT</button><nav class="nav"><a href="../" class="" data-pt="Visão geral">Overview</a><a href="../the-project/" class="" data-pt="O Projecto">The Project</a><a href="../your-villa/" class="" data-pt="A sua Villa">Your Villa</a><a href="../the-team/" class="on" data-pt="A Equipa">The Team</a></nav></header>
+<section class="center"><div class="c"><div class="kick" data-pt="A EQUIPA">THE TEAM</div>
+<h2 data-pt="Desenhado e desenvolvido pela Indico Developments">Designed and Delivered by Indico Developments</h2><p class="lead" data-pt="Villas, resorts, lodges, renovações e interiores à medida em Moçambique, do primeiro esboço ao mobiliário.">Bespoke villas, resorts, lodges, renovations and interiors in Mozambique, from the first sketch to the furniture.</p>
+<div class="stats" style="text-align:center"></div></div></section>
+<section class="paper"><div class="c"><div class="kick" data-pt="FUNDADORES">FOUNDERS</div><div class="people"><div class="person"><h3>Keano Zunguze</h3><div class="r" data-pt="Co-fundador">Co-founder</div><p data-pt=""></p></div><div class="person"><h3>Dellon Massinga</h3><div class="r" data-pt="Co-fundador">Co-founder</div><p data-pt=""></p></div></div></div></section>
+
+<section class="cta" id="contact"><div class="c">
+<div class="kick" data-pt="FALE COM O SEU CONSULTOR">SPEAK WITH YOUR ADVISOR</div>
+<h2 data-pt="Receba a informação completa">Get the full details</h2>
+<p class="lead" data-pt="Plantas, preços e disponibilidade das villas, enviados pelo seu consultor." style="margin:0 auto;color:rgba(255,255,255,.75)">Plans, prices and villa availability, sent by your advisor.</p>
+<a class="btn wa" href="https://wa.me/258857566614?text=Hello%2C%20I%20would%20like%20the%20full%20details%20of%20Malongane%20Beach%20Villas%20%28plans%2C%20prices%20and%20availability%29." target="_blank" rel="noopener" data-pt="Falar no WhatsApp">Chat on WhatsApp</a>
+<small data-pt="Normalmente respondemos no mesmo dia.">We usually reply the same day.</small></div></section>
+<footer><span data-pt="Conceito ilustrativo. Imagens, modelo 3D e áreas representam o estudo de conceito actual e podem mudar.">Illustrative concept. Images, 3D model and areas show the current concept study and may change.</span> © Indico Developments · <a href="../../">development.indicostay.com</a></footer>
+
+</body></html>
