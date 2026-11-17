@@ -70,7 +70,7 @@ footer { font-size:12px; color:var(--mute); }
 <header><div class="in">
  <div class="eye">Indico Developments · internal · supplier sourcing · 17/11/2026</div>
  <h1>Interior doors · South African suppliers</h1>
- <p>Katembe Ocean Views (KOV), Katembe, Maputo, Mozambique. Search area: Johannesburg (Gauteng, East Rand, West Rand) and Nelspruit / Mbombela (Mpumalanga). <a href="interior-doors-suppliers.xlsx" style="color:var(--brass);font:600 12px var(--mono)">Download the XLSX</a></p>
+ <p>Katembe Ocean Views (KOV), Katembe, Maputo, Mozambique. Search area: Johannesburg (Gauteng, East Rand, West Rand) and Nelspruit / Mbombela (Mpumalanga).</p>
  <div class="stats"><span><b>78</b>suppliers</span><span><b>54</b>Johannesburg / Gauteng</span><span><b>23</b>Nelspruit / Mbombela</span><span><b>1</b>National</span><span><b>23</b>WhatsApp verified</span><span><b>24</b>strong fit</span></div>
 </div></header>
 <main>
@@ -83,9 +83,14 @@ footer { font-size:12px; color:var(--mute); }
  <p class="mute" style="margin-top:12px">Questions for each supplier:</p><ol><li>Can you produce these sizes and finishes? Lead time for about 100 doors?</li><li>Price per door supply only, and doorset (leaf, frame, architrave, hinges, handle).</li><li>Delivery to Maputo, or collection in Johannesburg / Nelspruit?</li><li>Photos of similar work (hidden frame or slim aluminium sliding if you make them).</li></ol>
 </section>
 <section><h2>Styles we are sourcing</h2><div class="stys"><div class="sty"><i>A</i><b>Hidden frame flush doors and doorsets</b><span>Leaf sits flush with the wall, frame concealed or shadow line, complete doorset (leaf, frame, architrave, hinges, handle).</span></div><div class="sty"><i>B</i><b>Slim aluminium sliding (linked / telescopic)</b><span>Black slim aluminium frame with glass, two or three panels linked, embedded top track, floor to ceiling.</span></div><div class="sty"><i>C</i><b>Classic flush veneer doors (base spec)</b><span>40 mm flush leaf, oak veneer both faces, 2 100 high, black pressed steel or hardwood frame.</span></div></div></section>
-<section><h2>Reference looks (not suppliers)</h2><div class="refs"><div class="ref"><b>8DOORS Velto (Singapore)</b><p>Hidden frame flush door: aluminium frame encased in the wall, concealed keyhole, PET panel, standard or floor to ceiling.</p><p class="mute">Reference look only. Singapore maker, not a supplier for KOV.</p><a href="https://8doors.gallery/velto" target="_blank" rel="noopener">Product page</a> <a href="https://www.tiktok.com/@8_doors/video/7669356776189332754" target="_blank" rel="noopener">Source</a></div><div class="ref"><b>NuovaCasa doorsets (Kramerville)</b><p>Full doorset: leaf, frame, architrave, hinges, handle, sold in 2.1 to 2.6 m heights.</p><p class="mute">Reference and SA supplier (listed below).</p><a href="https://www.nuovacasa.co.za/shop/category/interior-doors-4" target="_blank" rel="noopener">Product page</a> <a href="https://www.tiktok.com/@nuovacasa_za/video/7398653953929481477" target="_blank" rel="noopener">Source</a></div><div class="ref"><b>WAYBOM three linkage sliding door</b><p>Slim black aluminium sliding glass door, three panels linked (telescopic, synchronised), embedded top track, decorative cover strip, floor to ceiling.</p><p class="mute">Reference look only. Local makers: see style B.</p><span class="mute">Video sent by Dellon (WAYBOM watermark)</span></div></div></section>
+<section><h2>Reference looks</h2><div class="refs"><div class="ref"><b>8DOORS Velto (Singapore)</b><p>Hidden frame flush door: aluminium frame encased in the wall, concealed keyhole, PET panel, standard or floor to ceiling.</p><p class="mute">Reference look only. Singapore maker, not a supplier for KOV.</p><a href="https://8doors.gallery/velto" target="_blank" rel="noopener">Product page</a> <a href="https://www.tiktok.com/@8_doors/video/7669356776189332754" target="_blank" rel="noopener">Source</a></div><div class="ref"><b>NuovaCasa doorsets (Kramerville)</b><p>Full doorset: leaf, frame, architrave, hinges, handle, sold in 2.1 to 2.6 m heights.</p><p class="mute">Reference and SA supplier (listed below).</p><a href="https://www.nuovacasa.co.za/shop/category/interior-doors-4" target="_blank" rel="noopener">Product page</a> <a href="https://www.tiktok.com/@nuovacasa_za/video/7398653953929481477" target="_blank" rel="noopener">Source</a></div><div class="ref"><b>WAYBOM three linkage sliding door</b><p>Slim black aluminium sliding glass door, three panels linked (telescopic, synchronised), embedded top track, decorative cover strip, floor to ceiling.</p><p class="mute">Reference look only. Local makers: see style B.</p><span class="mute">Video sent by Dellon (WAYBOM watermark)</span></div></div></section>
 <section>
- <h2>Suppliers, ranked by fit</h2>
+ <h2>Makers of the reference styles</h2>
+ <p class="mute">South African suppliers who make the looks above (Hidden frame flush doors and doorsets and Slim aluminium sliding (linked / telescopic)), best fit first.</p>
+ <div class="cards" id="feat"></div>
+</section>
+<section>
+ <h2>All suppliers, ranked by fit</h2>
  <div class="bar">
   <input id="q" type="search" placeholder="Search name, area, product" aria-label="Search suppliers">
   <div class="filters" role="group" aria-label="City"><button data-f="region" data-v="JHB" aria-pressed="false">Johannesburg / Gauteng <em>54</em></button><button data-f="region" data-v="NLP" aria-pressed="false">Nelspruit / Mbombela <em>23</em></button><button data-f="region" data-v="NAT" aria-pressed="false">National <em>1</em></button></div>
@@ -146,6 +151,8 @@ document.querySelectorAll('.filters button').forEach(b => b.addEventListener('cl
   render();
 }));
 document.getElementById('q').addEventListener('input', render);
+const FEAT = "AB";
+document.getElementById('feat').innerHTML = D.filter(s => s.fit >= 3 && s.styles.split('').some(k => FEAT.includes(k))).map(card).join('');
 render();
 </script>
 </body></html>
