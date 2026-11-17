@@ -26,6 +26,7 @@ h2 { font:800 20px var(--display); margin:0 0 10px; border-bottom:3px solid var(
 .mute { color:var(--mute); font-size:12.5px; }
 .refs, .stys { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; }
 .ref, .sty { background:var(--panel); border:1px solid var(--line); border-left:4px solid var(--brass); border-radius:8px; padding:12px 14px; display:grid; gap:4px; align-content:start; }
+.ref img { width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:6px; margin-bottom:4px; }
 .ref p { margin:0; font-size:13px; } .ref a { color:var(--brass); font:600 12px var(--mono); }
 .sty i { font:800 22px var(--display); font-style:normal; color:var(--brass); } .sty b { font-weight:600; } .sty span { font-size:12.5px; color:var(--mute); }
 .two { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:16px; }
@@ -112,10 +113,10 @@ const STY = {"A": "Hidden frame flush doors and doorsets", "B": "Slim aluminium 
 const REG = {"JHB": "Johannesburg / Gauteng", "NLP": "Nelspruit / Mbombela", "NAT": "National", "INT": "Outside SA"};
 const F = {region:new Set(), style:new Set(), kind:false, wa:false, fit:false};
 const esc = s => String(s??'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
-const isMaker = s => /manufact|maker|fabricat|joiner|carpent/i.test(s.kind);
+const isMaker = s => new RegExp("manufact|maker|fabricat|joiner|carpent", 'i').test(s.kind);
 function card(s) {
   const web = s.web ? (s.web.startsWith('http') ? s.web : 'https://' + s.web) : '';
-  const msg = encodeURIComponent('Hello, this is Indico Developments (Maputo). Can you produce interior doors for a 17 apartment project? We can send the specification.');
+  const msg = encodeURIComponent("Hello, this is Indico Developments (Maputo). Can you quote interior doors for a 17 apartment project? We can send the specification.");
   const acts = [];
   if (s.telh[0]) acts.push(`<a class="call" href="tel:${esc(s.telh[0][1])}">Call</a>`);
   if (s.wa) acts.push(`<a class="wa" href="https://wa.me/${esc(s.wa)}?text=${msg}" target="_blank" rel="noopener">WhatsApp</a>`);
@@ -127,11 +128,11 @@ function card(s) {
   const st = s.styles.split('').map(k => `<span class="chip st" title="${esc(STY[k]||'')}">${esc(k)}</span>`).join('');
   const rating = s.rating ? ` · Google ${esc(s.rating)} (${esc(s.reviews)})` : '';
   const src = (s.src||[]).map(u => String(u).startsWith('http') ? `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(u)}</a>` : esc(u)).join('<br>');
-  return `<article class="card"><div class="top"><h3>${esc(s.n)}</h3><span class="fit" title="Fit for our doors, 1 to 5">${'●'.repeat(s.fit)}${'○'.repeat(5-s.fit)}</span></div>
+  return `<article class="card"><div class="top"><h3>${esc(s.n)}</h3><span class="fit" title="Fit for our interior doors, 1 to 5">${'●'.repeat(s.fit)}${'○'.repeat(5-s.fit)}</span></div>
   <div class="chips"><span class="chip">${esc(REG[s.region]||s.region)}</span><span class="chip">${esc(s.kind)}</span>${st}${s.wa?'<span class="chip wa">WhatsApp verified</span>':''}${s.lib?'<span class="chip">in library</span>':''}</div>
   <div class="addr">${esc(s.addr)}${s.area && !String(s.addr).includes(s.area) ? ', ' + esc(s.area) : ''}${rating}</div>
   <div class="makes">${esc(s.makes)}</div>
-  <div class="why">${esc(s.why)}${s.custom && s.custom!=='unknown' ? ' Custom sizes: ' + esc(s.custom) + '.' : ''}</div>
+  <div class="why">${esc(s.why)}${s.custom && s.custom!=='unknown' ? ' ' + "Custom sizes" + ': ' + esc(s.custom) + '.' : ''}</div>
   ${tels ? `<div class="tels">${tels}</div>` : ''}
   <div class="acts">${acts.join('')}</div>
   <details><summary>Sources${s.wa ? ' and WhatsApp proof' : ''}</summary>${s.wa ? 'WhatsApp: ' + esc(s.wa_src) + '<br>' : ''}${src}</details></article>`;
