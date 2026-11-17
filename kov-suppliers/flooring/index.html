@@ -153,7 +153,7 @@ document.querySelectorAll('.filters button').forEach(b => b.addEventListener('cl
 }));
 document.getElementById('q').addEventListener('input', render);
 const FEAT = "AB";
-document.getElementById('feat').innerHTML = D.filter(s => s.fit >= 3 && s.styles.split('').some(k => FEAT.includes(k))).map(card).join('');
+document.getElementById('feat').innerHTML = D.filter(s => s.fit >= 4 && s.styles.split('').some(k => FEAT.includes(k))).map(card).join('');
 render();
 </script>
 </body></html>
