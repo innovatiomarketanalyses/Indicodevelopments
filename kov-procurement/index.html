@@ -138,7 +138,8 @@ textarea.rfq { width:100%; min-height:240px; font:12.5px/1.5 var(--mono); paddin
   tbody tr { border:1px solid var(--line); border-radius:8px; margin-bottom:8px; padding:6px; display:grid; grid-template-columns:60px minmax(0,1fr); }
   tbody tr:nth-child(even) td { background:none; }
   td { border:0; padding:4px 6px; }
-  td.ph { grid-row:span 4; }
+  td.ph { grid-row:span 5; grid-column:1; }
+  tbody tr td:not(.ph) { grid-column:2; }
   td.n, td.qty { text-align:left; }
   td[data-l]::before { content:attr(data-l); display:block; font:600 10px var(--mono); text-transform:uppercase; color:var(--mute); }
   tr.grp { display:block; border:0; padding:0; }
