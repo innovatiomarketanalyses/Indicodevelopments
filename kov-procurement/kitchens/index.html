@@ -7,12 +7,17 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#111814;--card:#18211c;--ink:#e8e6de;--mute:#9aa39b;--line:#2c3730;--green:#2b5140;--brass:#d2ad6a;--hl:#1d2b23}}
 :root[data-theme=dark]{--bg:#111814;--card:#18211c;--ink:#e8e6de;--mute:#9aa39b;--line:#2c3730;--green:#2b5140;--brass:#d2ad6a;--hl:#1d2b23}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body)}
-.wrap{max-width:1180px;margin:0 auto;padding:28px 16px 80px}
-header{background:var(--green);color:var(--green-ink);padding:28px 16px}header .wrap{padding:0 16px}
+.wrap{max-width:1320px;margin:0 auto;padding:22px 16px 80px}h2{scroll-margin-top:60px}
+header.top{background:var(--green);color:var(--green-ink)}.top .in{max-width:1320px;margin:0 auto;padding:14px 16px;display:flex;gap:14px 24px;align-items:center;flex-wrap:wrap}
+.brand{display:grid}.brand small{font:600 10.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--brass)}.brand b{font:800 20px/1.1 var(--display)}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}.tabs a{color:var(--green-ink);text-decoration:none;padding:7px 12px;border-radius:7px;font:500 13px var(--body);border:1px solid rgba(255,255,255,.2)}
+.tabs a[aria-current=page]{background:var(--green-ink);color:var(--green);font-weight:600}
+.lead{color:var(--mute);max-width:920px;margin:6px 0 0}.jump{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 0;display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.jump a,.jump button{color:var(--ink);border:1px solid var(--line);background:var(--card);padding:5px 11px;border-radius:999px;text-decoration:none;font:500 12.5px var(--mono);cursor:pointer}.jump a:hover{border-color:var(--brass)}
+@media (max-width:760px){.tabs{margin-left:0}h1{font-size:23px}}
 h1{font:800 30px/1.15 var(--display);margin:0 0 8px}h2{font:700 22px var(--display);margin:40px 0 12px;border-top:2px solid var(--ink);padding-top:14px}
 h4{font:600 13px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--brass);margin:22px 0 8px}
-header p{margin:4px 0;opacity:.9;max-width:900px}nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-nav a{color:var(--green-ink);border:1px solid rgba(255,255,255,.35);padding:4px 10px;border-radius:999px;text-decoration:none;font:500 13px var(--mono)}
+
 .box{overflow-x:auto}table{width:100%;border-collapse:collapse;background:var(--card);font-size:14px}
 th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{font:600 12px var(--mono);text-transform:uppercase;color:var(--mute)}
 .n{text-align:right;font-family:var(--mono);white-space:nowrap}td[strong]{font-weight:700;color:var(--brass)}
@@ -27,11 +32,12 @@ details{background:var(--card);border:1px solid var(--line);margin:10px 0;paddin
 .meta{color:var(--mute);font-family:var(--mono);font-size:13px}.note{background:var(--hl);border-left:3px solid var(--brass);padding:12px 14px;margin:14px 0}
 ul{padding-left:20px}li{margin:4px 0}
 </style></head><body>
-<header><div class=wrap><h1>Katembe Ocean Views: kitchens and wardrobes, real cost</h1>
-<p>Every panel cut from real Mozoasis sheets, every hinge, runner and metre of edge tape, labour by crew days. Prices checked on mozoasis.com on 18/11/2026.
+<header class=top><div class=in><div class=brand><small>Indico Developments</small><b>KOV Procurement</b></div>
+<nav class=tabs aria-label=Pages><a href="../">1 · What we need</a><a href="../verified/">2 · Suppliers to contact first</a><a href="./" aria-current=page>3 · Kitchen and wardrobe costs</a><a href="../KOV-Procurement-A3.pdf">A3 PDF</a></nav></div></header>
+<main class=wrap><h1>Kitchens and wardrobes: real cost and client price</h1><p class=lead>Every panel cut from real Mozoasis sheets, every hinge, runner and metre of edge tape, labour by crew days. Prices checked on mozoasis.com on 18/11/2026.
 Policy: the whole kitchen (cabinets, labour, appliances, sink, tap, granite worktop and splash back) is charged at 2 x cost. Granite: Mozoasis Madd White slabs, fabrication + fitting at the Kandua SA labour mid rate (to confirm in Maputo).</p>
-<nav><a href="#summary">Summary</a><a href="#t3">T3</a><a href="#t2">T2</a><a href="#t2c">T2 compact</a><a href="#rs">Restaurant and supermarket</a><a href="#claudia">Claudia + Luciana check</a><a href="#method">How we quote</a><a href="#assumptions">Assumptions</a><a href="../">Procurement site</a></nav></div></header>
-<main class=wrap>
+<nav class=jump aria-label=Sections><a href="#summary">Summary</a><a href="#t3">T3</a><a href="#t2">T2</a><a href="#t2c">T2 compact</a><a href="#rs">Restaurant and supermarket</a><a href="#claudia">Check vs real jobs</a><a href="#method">How we quote</a><a href="#assumptions">Assumptions</a><button type=button onclick="document.querySelectorAll('details').forEach(d=>d.open=true)">Open all</button><button type=button onclick="document.querySelectorAll('details').forEach(d=>d.open=false)">Close all</button></nav>
+
 <section id=summary><h2>Summary per apartment (MT)</h2><div class=box><table><thead><tr><th>Type</th><th class=n>Kitchen cabinets</th>
 <th class=n>Appliances, sink, tap</th><th class=n>Worktop + splash (granite)</th><th class=n>Complete kitchen cost</th><th class=n>Kitchen client price</th><th class=n>Wardrobes cost</th>
 <th class=n>Wardrobes client price</th></tr></thead><tbody><tr><td><b>T3 (12 apartments)</b></td><td class=n>243 966</td><td class=n>263 219</td><td class=n>82 665</td><td class=n>589 850</td><td class=n strong>1 179 700</td><td class=n>226 571</td><td class=n strong>453 142</td></tr><tr><td><b>T2 (3 apartments)</b></td><td class=n>123 649</td><td class=n>131 553</td><td class=n>42 838</td><td class=n>298 040</td><td class=n strong>596 080</td><td class=n>169 260</td><td class=n strong>338 520</td></tr><tr><td><b>T2 compact (2 apartments)</b></td><td class=n>134 768</td><td class=n>180 767</td><td class=n>23 630</td><td class=n>339 165</td><td class=n strong>678 330</td><td class=n>135 649</td><td class=n strong>271 298</td></tr></tbody></table></div>
