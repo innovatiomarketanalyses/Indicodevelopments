@@ -126,6 +126,7 @@ textarea.rfq { width:100%; min-height:240px; font:12.5px/1.5 var(--mono); paddin
 @media (max-width: 760px) {
   .tabs { margin-left:0; }
   h1 { font-size:23px; }
+  .tools { position:static; }
   .pkg > summary { grid-template-columns:36px minmax(0,1fr) 22px; }
   .pkg > summary .money { grid-column:2 / 3; text-align:left; min-width:0; }
   .pkg > summary .chev { grid-row:1; grid-column:3; }
@@ -282,7 +283,7 @@ function rfqText(c){
   const lines = c.items.map(it=>`- ${it.i}${it.s?` (${it.s})`:''}: ${num(it.o)} ${it.u}`).join('\n');
   return `Subject: Request for quotation · ${D.name} (Maputo) · ${c.name}\n\nGood day,\n\nIndico Developments is procuring for ${D.name}, a 17 apartment building with restaurant, pool and amenities in Katembe, Maputo, Mozambique.\nPlease send your best price for the items below (supply only, and supply and install if you offer it), with lead time, validity and delivery to Maputo or collection in Johannesburg.\n\n${lines || '- See attached drawings and schedule'}\n\n${D.pack_base && c.items.length ? `Plans showing where every item goes, sizes, specifications and photos:\n${D.pack_base}${c.id}/\n\n` : ''}Please quote per line so we can compare.\n\nKind regards,\nIndico Developments`;
 }
-function verFor(c){ for (const p of c.pkgs) if (VER[p]) return [p, VER[p]]; return null; }
+function verFor(c){ const p = c.pkgs[0]; return VER[p] ? [p, VER[p]] : null; }
 
 function section(c, items, sups, open){
   const pr = c.items.filter(i=>i._tot).length, pct = c.items.length ? Math.round(pr/c.items.length*100) : 0;
