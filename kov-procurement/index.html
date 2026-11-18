@@ -56,7 +56,9 @@ details.guide > summary { padding:10px 14px; cursor:pointer; font-weight:600; }
 .tools { position:sticky; top:0; z-index:5; background:var(--bg); padding:10px 0; border-bottom:1px solid var(--line); display:grid; gap:8px; }
 .tools .row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
 .tools input[type=search] { flex:1 1 280px; min-width:0; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:var(--panel); }
-.tools select { padding:9px 10px; border:1px solid var(--line); border-radius:8px; background:var(--panel); max-width:100%; }
+.tools { grid-template-columns:minmax(0,1fr); }
+.tools .row { min-width:0; }
+.tools select { padding:9px 10px; border:1px solid var(--line); border-radius:8px; background:var(--panel); max-width:100%; min-width:0; flex:1 1 220px; }
 .seg { display:inline-flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--panel); }
 .seg button { border:0; background:none; padding:7px 11px; cursor:pointer; font-size:12.5px; border-right:1px solid var(--line); }
 .seg button:last-child { border-right:0; }
